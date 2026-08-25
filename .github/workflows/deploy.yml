@@ -24,6 +24,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validation dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate resumes
+        run: python build_resume.py
+
+      - name: Validate portfolio
+        env:
+          CHECK_EXTERNAL_LINKS: "1"
+        run: python scripts/validate_portfolio.py
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

@@ -7,18 +7,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- SEO Meta Tags -->
-    <title>Rajesh Kodaganti | Creative Software Engineer</title>
+    <title>Rajesh Kodaganti | AI Software Engineer & Developer</title>
     <meta name="description"
-        content="Portfolio of Rajesh Kodaganti, a Software Engineer blending code with creativity. Specializing in ML, Data Engineering & Cybersecurity.">
+        content="AI Software Engineer and Developer building Python cloud automation, Azure AI systems, backend workflows, RAG applications, and production data pipelines.">
     <meta name="keywords"
-        content="Rajesh Kodaganti, Software Engineer, Machine Learning, Creative Developer, Portfolio">
+        content="Rajesh Kodaganti, AI Software Engineer, AI Developer, Python Developer, Azure AI, RAG, Cloud Automation, Portfolio">
     <meta name="author" content="Rajesh Kodaganti">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Rajesh Kodaganti - Creative Developer">
-    <meta property="og:description" content="Software Engineer & Master's Student. Making tech fun and functional.">
-    <meta property="og:image" content="images/profile.jpg">
+    <meta property="og:title" content="Rajesh Kodaganti | AI Software Engineer & Developer">
+    <meta property="og:description" content="Production-focused Azure AI, Python automation, RAG, backend, and data-pipeline engineering.">
+    <meta property="og:url" content="https://rajeshkodaganti.com/">
+    <meta property="og:image" content="https://rajeshkodaganti.com/images/profile.jpg">
+    <meta property="og:image:alt" content="Rajesh Kodaganti, AI Software Engineer and Developer">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rajesh Kodaganti | AI Software Engineer & Developer">
+    <meta name="twitter:description" content="Azure AI, Python automation, RAG, backend, and data-pipeline engineering.">
+    <meta name="twitter:image" content="https://rajeshkodaganti.com/images/profile.jpg">
+    <link rel="canonical" href="https://rajeshkodaganti.com/">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Person",
+                "@id": "https://rajeshkodaganti.com/#person",
+                "name": "Rajesh Kodaganti",
+                "url": "https://rajeshkodaganti.com/",
+                "image": "https://rajeshkodaganti.com/images/profile.jpg",
+                "jobTitle": ["AI Software Engineer", "Software Developer"],
+                "email": "mailto:rajeshkodaganti.work@gmail.com",
+                "address": { "@type": "PostalAddress", "addressLocality": "Redmond", "addressRegion": "WA", "addressCountry": "US" },
+                "alumniOf": { "@type": "CollegeOrUniversity", "name": "California State University, Northridge" },
+                "sameAs": [
+                    "https://github.com/Unigalactix",
+                    "https://www.linkedin.com/in/rajesh-kodaganti-323118215/",
+                    "https://learn.microsoft.com/en-us/users/rajeshkodaganti/"
+                ],
+                "knowsAbout": ["Python", "Azure AI", "Azure Functions", "RAG", "Data Pipelines", "Backend Development"]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://rajeshkodaganti.com/#website",
+                "url": "https://rajeshkodaganti.com/",
+                "name": "Rajesh Kodaganti Portfolio",
+                "author": { "@id": "https://rajeshkodaganti.com/#person" }
+            },
+            {
+                "@type": "SoftwareApplication",
+                "name": "JobPilot",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web",
+                "url": "https://jobspilot.site/",
+                "author": { "@id": "https://rajeshkodaganti.com/#person" }
+            }
+        ]
+    }
+    </script>
 
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
@@ -34,11 +81,13 @@
 
     <!-- Styles -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css?v=5">
-    <link rel="stylesheet" href="css/tech-games.css?v=2">
+    <link rel="stylesheet" href="css/styles.css?v=6">
+    <link rel="stylesheet" href="css/tech-games.css?v=6">
 </head>
 
 <body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
     <div id="splash-screen" aria-live="polite" role="status">
         <div class="splash-terminal">
@@ -99,6 +148,7 @@
         </div>
     </header>
 
+    <main id="main-content">
     <!-- Hero Section -->
     <section id="lead">
         <canvas id="hero-canvas" aria-hidden="true"></canvas>
@@ -110,17 +160,18 @@
                 <h1>Hi, I'm Rajesh. <br> I build <span style="color: var(--accent-purple);">intelligent</span> systems.
                 </h1>
                 <p>
-                    I'm an <strong>AI Software Engineer</strong> and <strong>Master's Student</strong> who loves turning
-                    complex data into clean, playful, and powerful applications.
+                    I'm an <strong>AI Software Engineer and Developer</strong> building Python cloud automation,
+                    backend workflows, data pipelines, and AI-powered systems on Azure.
                 </p>
+                <p class="hero-impact"><strong>Production impact:</strong> delivered a six-phase outage-management pipeline supporting Severity 0-2 incidents across 70+ Microsoft Identity services.</p>
                 <div class="hero-btn-group" style="margin-top: 2rem; display: flex; gap: 1rem;">
                     <a href="#experience" class="btn-fun">See My Work</a>
 
-                    <a href="#" data-link="github" target="_blank" class="btn-fun btn-outline-fun">
+                    <a href="#" data-link="github" target="_blank" rel="noopener noreferrer" class="btn-fun btn-outline-fun">
                         <i class="fa fa-github"></i> GitHub
                     </a>
 
-                    <a href="#" data-link="linkedin" target="_blank" class="btn-fun btn-outline-fun">
+                    <a href="#" data-link="linkedin" target="_blank" rel="noopener noreferrer" class="btn-fun btn-outline-fun">
                         <i class="fa fa-linkedin"></i> LinkedIn
                     </a>
 
@@ -138,7 +189,7 @@
                             </a>
                             <a href="resume-2page.pdf" download role="menuitem">
                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                <span class="resume-opt">2-Page<small>Standard</small></span>
+                                <span class="resume-opt">2-Page<small>Recommended</small></span>
                             </a>
                             <a href="resume-3page.pdf" download role="menuitem">
                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
@@ -359,89 +410,10 @@
     <section id="experience" class="section">
         <div class="container">
             <h2>Experience</h2>
-            <div class="experience-grid">
-
-                <!-- Experience Item 0 (Microsoft) -->
-                <div class="browser-card" onclick="openExperienceModal('microsoft')" style="cursor: pointer;">
-                    <div class="browser-header">
-                        <div class="dot red"></div>
-                        <div class="dot yellow"></div>
-                        <div class="dot green"></div>
-                        <div class="browser-address-bar"></div>
-                    </div>
-                    <div class="browser-content">
-                        <span class="card-role">AI Software Engineer</span>
-                        <h3>Microsoft</h3>
-                        <span class="card-date">Mar 2026 – Present</span>
-                        <p>Architecting and developing AI software solutions.</p>
-                        <div style="margin-top: auto; text-align: right; color: var(--accent-green);">
-                            Open details() ->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Experience Item 1 -->
-                <div class="browser-card" onclick="openExperienceModal('quadrant')" style="cursor: pointer;">
-                    <div class="browser-header">
-                        <div class="dot red"></div>
-                        <div class="dot yellow"></div>
-                        <div class="dot green"></div>
-                        <div class="browser-address-bar"></div>
-                    </div>
-                    <div class="browser-content">
-                        <span class="card-role">AI Software Engineer</span>
-                        <h3>Quadrant Technologies</h3>
-                        <span class="card-date">Aug 2025 – Present</span>
-                        <p>Architecting scalable AI solutions and enhancing threat intelligence workflows.</p>
-                        <div style="margin-top: auto; text-align: right; color: var(--accent-green);">
-                            Open details() ->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Experience Item 2 -->
-                <div class="browser-card" onclick="openExperienceModal('qikcell')" style="cursor: pointer;">
-                    <div class="browser-header">
-                        <div class="dot red"></div>
-                        <div class="dot yellow"></div>
-                        <div class="dot green"></div>
-                        <div class="browser-address-bar"></div>
-                    </div>
-                    <div class="browser-content">
-                        <span class="card-role">Solutions Engineer</span>
-                        <h3>QikCell by tickioT</h3>
-                        <span class="card-date">Jan 2025 – May 2025</span>
-                        <p>Engineered IoT workflows and demonstrated complex technical solutions to enterprise clients.
-                        </p>
-                        <div style="margin-top: auto; text-align: right; color: var(--accent-green);">
-                            Open details() ->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Experience Item 3 -->
-                <div class="browser-card collapsible-experience" onclick="openExperienceModal('coloros')"
-                    style="cursor: pointer; display: none;">
-                    <div class="browser-header">
-                        <div class="dot red"></div>
-                        <div class="dot yellow"></div>
-                        <div class="dot green"></div>
-                        <div class="browser-address-bar"></div>
-                    </div>
-                    <div class="browser-content">
-                        <span class="card-role">User Test Specialist</span>
-                        <h3>ColorOS (OPPO)</h3>
-                        <span class="card-date">June 2018 – July 2022</span>
-                        <p>Rigorous QA and UX optimization for global mobile operating systems.</p>
-                        <div style="margin-top: auto; text-align: right; color: var(--accent-green);">
-                            Open details() ->
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <p class="section-intro">Production AI, cloud automation, data engineering, and software delivery roles.</p>
+            <div id="experience-grid" class="experience-grid" aria-live="polite"></div>
             <div style="text-align: center; margin-top: 2rem;">
-                <button id="experience-toggle-btn" class="btn-fun btn-outline-fun">Show More</button>
+                <button id="experience-toggle-btn" class="btn-fun btn-outline-fun" aria-expanded="false" hidden>Show More</button>
             </div>
         </div>
     </section>
@@ -451,7 +423,7 @@
         <div class="container">
             <h2>Education</h2>
             <div class="education-grid">
-                <div class="browser-card" onclick="openEducationModal('csun')" style="cursor: pointer;">
+                <div class="browser-card accessible-card" role="button" tabindex="0" data-education-id="csun" aria-label="View California State University education details">
                     <div class="browser-header">
                         <div class="dot red"></div>
                         <div class="dot yellow"></div>
@@ -469,7 +441,7 @@
                     </div>
                 </div>
 
-                <div class="browser-card" onclick="openEducationModal('jbiet')" style="cursor: pointer;">
+                <div class="browser-card accessible-card" role="button" tabindex="0" data-education-id="jbiet" aria-label="View J.B. Institute education details">
                     <div class="browser-header">
                         <div class="dot red"></div>
                         <div class="dot yellow"></div>
@@ -493,7 +465,8 @@
     <!-- Projects Section (Dynamic) -->
     <section id="projects" class="section">
         <div class="container">
-            <h2>Things I Built, Broke And Fixed</h2>
+            <h2>Selected Engineering Case Studies</h2>
+            <p class="section-intro">Flagship systems first, with the problem, implementation approach, evidence, and production impact made explicit.</p>
             <div id="projects-grid" class="game-grid">
                 <!-- Dynamic Projects Loaded Here -->
             </div>
@@ -508,6 +481,7 @@
     <section id="certifications" class="section" style="background: var(--bg-card);">
         <div class="container">
             <h2>Proof Of Practice</h2>
+            <p class="section-intro">Role-relevant credentials appear first; additional credentials remain available by issuer.</p>
             <div id="certifications-grid" class="cert-grid">
                 <!-- Dynamic Certs Loaded Here -->
             </div>
@@ -517,10 +491,11 @@
         </div>
     </section>
 
-    <!-- Fun Zone -->
+    <!-- Creative Lab -->
     <section id="games" class="section">
         <div class="container" style="text-align:center;">
-            <h2>Debug Break</h2>
+            <span class="section-eyebrow">Creative Lab</span>
+            <h2>Interactive Experiments</h2>
 
             <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
                 <button id="techGamesButton" class="btn-fun">
@@ -552,9 +527,8 @@
                     </div>
                 </div>
                 <div class="activity-heatmap reveal" data-reveal="up">
-                    <h3>Consistency Grid</h3>
-                    <div id="commit-heatmap" class="commit-heatmap"></div>
-                    <p>Weekly cadence simulating build consistency and learning streaks.</p>
+                    <h3>Verified Milestones</h3>
+                    <ol id="milestone-timeline" class="milestone-timeline"></ol>
                 </div>
                 <div class="activity-recent reveal" data-reveal="up">
                     <h3>Recent Build Focus</h3>
@@ -571,8 +545,8 @@
             <div class="row">
                 <div class="col-md-6">
                     <p class="intro-text">
-                        Whether you want to discuss AI pipelines, secure architecture, or just debate the best bear
-                        species, I'm all ears.
+                        I am open to AI Software Engineer and Developer opportunities focused on applied AI, Python,
+                        Azure, backend systems, and reliable automation.
                     </p>
                     <div class="contact-info">
                         <p><i class="fa fa-envelope"></i> rajeshkodaganti.work@gmail.com</p>
@@ -598,17 +572,18 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer>
         <div class="container" style="text-align:center; display: flex; flex-direction: column; align-items: center;">
             <div class="social-icons">
-                <a href="#" data-link="github"><i class="fa fa-github"></i></a>
-                <a href="#" data-link="linkedin"><i class="fa fa-linkedin"></i></a>
+                <a href="#" data-link="github" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile"><i class="fa fa-github" aria-hidden="true"></i></a>
+                <a href="#" data-link="linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
                 <a href="#" data-link="learn" target="_blank" rel="noopener" title="Microsoft Learn" aria-label="Microsoft Learn profile"><i class="fa fa-graduation-cap"></i></a>
-                <a href="#" data-link="email"><i class="fa fa-envelope"></i></a>
+                <a href="#" data-link="email" aria-label="Email Rajesh"><i class="fa fa-envelope" aria-hidden="true"></i></a>
             </div>
-            <p style="margin-top: 2rem; text-align: center; width: 100%;">&copy; 2025 Rajesh Kodaganti. <br> Built with
+            <p style="margin-top: 2rem; text-align: center; width: 100%;">&copy; <span data-current-year>2026</span> Rajesh Kodaganti. <br> Built with
                 <span style="color:red;">&hearts;</span> and lots of console.log().
             </p>
         </div>
@@ -634,7 +609,7 @@
         <div class="game-modal-content">
             <div class="game-modal-header">
                 <h2><i class="fa fa-gamepad"></i> Arcade Zone</h2>
-                <span class="game-close-btn">&times;</span>
+                <button type="button" class="game-close-btn" aria-label="Close arcade"><i class="fa fa-times" aria-hidden="true"></i></button>
             </div>
 
             <div class="game-modal-body">
@@ -738,14 +713,12 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/config.js?v=2"></script>
-    <script src="js/nav-dropdown.js?v=2"></script>
-    <script src="js/scripts.js?v=3"></script>
-    <script src="js/multi-games.js?v=2"></script>
-    <script src="js/tech-games.js?v=2"></script>
-    <script src="js/modal-manager.js?v=2"></script>
-    <script src="js/content-loader.js?v=3"></script>
-    <script src="js/chatbot.js?v=2"></script>
+    <script src="js/config.js?v=6" defer></script>
+    <script src="js/nav-dropdown.js?v=6" defer></script>
+    <script src="js/scripts.js?v=6" defer></script>
+    <script src="js/modal-manager.js?v=6" defer></script>
+    <script src="js/content-loader.js?v=6" defer></script>
+    <script src="js/chatbot.js?v=6" defer></script>
 
 </body>
 

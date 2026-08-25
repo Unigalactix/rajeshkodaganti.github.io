@@ -1,7 +1,7 @@
 /*!
     Title: Dev Portfolio Template
-    Version: 1.2.3
-    Last Change: 07/20/2025
+    Version: 1.3.0
+    Last Change: 08/24/2026
     Author: Rajesh Kodaganti
     Description: Portfolio scripts for Rajesh Kodaganti (Vanilla JS)
 */
@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     initSplashScreen(prefersReducedMotion);
+    initStaticAccessibility();
+    initLazyCreativeLab();
 
     // 1. Load Profile Data from config.js
     if (window.PROFILE_DATA) {
@@ -114,6 +116,63 @@ document.addEventListener('DOMContentLoaded', function () {
     initCommandPalette();
     initCardChromeNormalization();
 });
+
+function initStaticAccessibility() {
+    document.querySelectorAll('[data-current-year]').forEach(element => {
+        element.textContent = String(new Date().getFullYear());
+    });
+
+    document.querySelectorAll('[data-education-id]').forEach(card => {
+        const open = () => openEducationModal(card.dataset.educationId);
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                open();
+            }
+        });
+    });
+}
+
+function initLazyCreativeLab() {
+    loadFeatureOnDemand('gamesButton', 'js/multi-games.js?v=6', 'initMultiGames');
+    loadFeatureOnDemand('techGamesButton', 'js/tech-games.js?v=6', 'initTechGames');
+}
+
+function loadFeatureOnDemand(buttonId, src, initializerName) {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+
+    const load = async event => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        button.removeEventListener('click', load, true);
+        button.disabled = true;
+        button.setAttribute('aria-busy', 'true');
+
+        try {
+            await loadScript(src);
+            if (typeof window[initializerName] === 'function') window[initializerName]();
+        } finally {
+            button.disabled = false;
+            button.removeAttribute('aria-busy');
+        }
+
+        button.click();
+    };
+
+    button.addEventListener('click', load, true);
+}
+
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error(`Unable to load ${src}`));
+        document.head.appendChild(script);
+    });
+}
 
 function initSplashScreen(prefersReducedMotion) {
     const splash = document.getElementById('splash-screen');

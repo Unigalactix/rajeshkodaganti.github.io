@@ -13,16 +13,6 @@ const PROFILE_DATA = {
         linkedin: "https://www.linkedin.com/in/rajesh-kodaganti-323118215/",
         email: "mailto:rajeshkodaganti.work@gmail.com",
         learn: "https://learn.microsoft.com/en-us/users/rajeshkodaganti/"
-    },
-
-    // Resume (Optional - add path if available)
-    resume: "#resume-download-link", // e.g., "assets/resume.pdf"
-
-    // Project/Experience Links (for 'Open details' buttons)
-    experience: {
-        quadrant: "https://quadranttechnologies.com", // Example link
-        qikcell: "#",
-        coloros: "#"
     }
 };
 

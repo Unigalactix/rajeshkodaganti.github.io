@@ -2,28 +2,17 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('js/data.json')
         .then(response => response.json())
         .then(data => {
+            window.PORTFOLIO_DATA = data;
+            if (window.modalManager) window.modalManager.setData(data);
             renderAbout(data.basics, data.skills);
             renderSkills(data.skills);
+            renderExperience(data.work);
             renderProjects(data.projects);
             renderCertifications(data.certificates);
             renderBuildLogs(data.projects, data.work);
             renderActivityDashboard(data);
         })
         .catch(error => console.error('Error loading data:', error));
-
-    // Experience Static Toggle Logic
-    const expToggleBtn = document.getElementById('experience-toggle-btn');
-    if (expToggleBtn) {
-        let expExpanded = false;
-        expToggleBtn.addEventListener('click', () => {
-            expExpanded = !expExpanded;
-            const items = document.querySelectorAll('.collapsible-experience');
-            items.forEach(item => item.style.display = expExpanded ? '' : 'none');
-            expToggleBtn.textContent = expExpanded ? 'Show Less' : 'Show More';
-            expToggleBtn.style.background = expExpanded ? 'var(--accent-green)' : 'transparent';
-            expToggleBtn.style.color = expExpanded ? 'var(--bg-charcoal)' : 'var(--accent-green)';
-        });
-    }
 });
 
 function renderAbout(basics, skills) {
@@ -50,6 +39,73 @@ function renderAbout(basics, skills) {
     } else {
         focusEl.textContent = baseSummary;
     }
+}
+
+function renderExperience(work) {
+    const container = document.getElementById('experience-grid');
+    const toggleBtn = document.getElementById('experience-toggle-btn');
+    if (!container || !Array.isArray(work)) return;
+
+    container.innerHTML = '';
+    const visibleCount = 3;
+
+    work.forEach((job, index) => {
+        const card = document.createElement('article');
+        card.className = 'browser-card accessible-card';
+        card.tabIndex = 0;
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', `View ${job.position} experience at ${job.name}`);
+        if (index >= visibleCount) {
+            card.classList.add('collapsible-experience');
+            card.hidden = true;
+        }
+
+        card.innerHTML = `
+            <div class="browser-header" aria-hidden="true">
+                <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                <div class="browser-address-bar"></div>
+            </div>
+            <div class="browser-content">
+                <span class="card-role">${job.position}</span>
+                <h3>${job.name}</h3>
+                <span class="card-date">${formatPeriod(job.startDate, job.endDate)}</span>
+                <p>${job.summary}</p>
+                <span class="card-open">Open details() -&gt;</span>
+            </div>`;
+
+        const open = () => openExperienceModal(job.id);
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                open();
+            }
+        });
+        container.appendChild(card);
+    });
+
+    if (work.length > visibleCount && toggleBtn) {
+        toggleBtn.hidden = false;
+        let expanded = false;
+        toggleBtn.addEventListener('click', () => {
+            expanded = !expanded;
+            document.querySelectorAll('.collapsible-experience').forEach(card => {
+                card.hidden = !expanded;
+            });
+            toggleBtn.textContent = expanded ? 'Show Less' : 'Show More';
+            toggleBtn.setAttribute('aria-expanded', String(expanded));
+        });
+    }
+}
+
+function formatPeriod(startDate, endDate) {
+    const format = value => {
+        if (!value || value === 'Present') return value || '';
+        const [year, month] = value.split('-').map(Number);
+        return new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' })
+            .format(new Date(year, (month || 1) - 1, 1));
+    };
+    return `${format(startDate)} - ${format(endDate)}`;
 }
 
 function renderSkills(skills) {
@@ -117,7 +173,7 @@ function renderProjects(projects) {
     projects.forEach((project, index) => {
         const caseStudy = getCaseStudyCopy(project);
 
-        const card = document.createElement('div');
+        const card = document.createElement('article');
         card.className = 'browser-card project-card reveal';
         card.setAttribute('data-reveal', 'up');
 
@@ -144,6 +200,8 @@ function renderProjects(projects) {
         // Content
         const content = document.createElement('div');
         content.className = 'browser-content';
+
+        const visual = createProjectVisual(project);
 
         const kicker = document.createElement('span');
         kicker.className = 'case-kicker';
@@ -182,6 +240,7 @@ function renderProjects(projects) {
             const githubLink = document.createElement('a');
             githubLink.href = project.github;
             githubLink.target = '_blank';
+            githubLink.rel = 'noopener noreferrer';
             githubLink.className = 'btn-text';
             githubLink.innerHTML = '<i class="fa fa-github"></i> Code';
             linksDiv.appendChild(githubLink);
@@ -191,29 +250,22 @@ function renderProjects(projects) {
             const demoLink = document.createElement('a');
             demoLink.href = project.url;
             demoLink.target = '_blank';
+            demoLink.rel = 'noopener noreferrer';
             demoLink.className = 'btn-text';
             demoLink.innerHTML = '<i class="fa fa-external-link"></i> Live';
             linksDiv.appendChild(demoLink);
         }
 
         if (project.id) {
-            const detailsDiv = document.createElement('div');
-            detailsDiv.style.marginTop = '1rem';
-            detailsDiv.style.textAlign = 'right';
-            detailsDiv.style.color = 'var(--accent-green)';
-            detailsDiv.textContent = 'Open details() ->';
-            linksDiv.appendChild(detailsDiv);
-
-            card.style.cursor = 'pointer';
-            card.onclick = () => openProjectModal(project.id);
-
-            // Prevent link clicks from triggering modal
-            const anchors = linksDiv.querySelectorAll('a');
-            anchors.forEach(a => {
-                a.onclick = (e) => e.stopPropagation();
-            });
+            const detailsButton = document.createElement('button');
+            detailsButton.type = 'button';
+            detailsButton.className = 'btn-text project-details-btn';
+            detailsButton.innerHTML = '<i class="fa fa-info-circle" aria-hidden="true"></i> Details';
+            detailsButton.addEventListener('click', () => openProjectModal(project.id));
+            linksDiv.appendChild(detailsButton);
         }
 
+        if (visual) content.appendChild(visual);
         content.appendChild(kicker);
         content.appendChild(title);
         content.appendChild(problem);
@@ -250,6 +302,33 @@ function renderProjects(projects) {
             projToggleBtn.style.color = projExpanded ? 'var(--bg-charcoal)' : 'var(--accent-green)';
         });
     }
+}
+
+function createProjectVisual(project) {
+    if (project.image) {
+        const figure = document.createElement('figure');
+        figure.className = 'project-visual';
+        const image = document.createElement('img');
+        image.src = project.image;
+        image.alt = project.imageAlt || `${project.name} interface`;
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        figure.appendChild(image);
+        return figure;
+    }
+
+    if (project.visualType === 'architecture') {
+        const figure = document.createElement('figure');
+        figure.className = 'project-visual architecture-visual';
+        figure.setAttribute('aria-label', `${project.name} architecture overview`);
+        const labels = (project.keywords || []).slice(0, 4);
+        figure.innerHTML = labels.map((label, index) =>
+            `<span class="architecture-node">${label}</span>${index < labels.length - 1 ? '<i class="fa fa-long-arrow-right" aria-hidden="true"></i>' : ''}`
+        ).join('');
+        return figure;
+    }
+
+    return null;
 }
 
 function getCaseStudyCopy(project) {
@@ -293,10 +372,10 @@ function renderActivityDashboard(data) {
     const projectCount = document.getElementById('metric-projects');
     const domainCount = document.getElementById('metric-domains');
     const certCount = document.getElementById('metric-certs');
-    const heatmap = document.getElementById('commit-heatmap');
+    const timeline = document.getElementById('milestone-timeline');
     const recentList = document.getElementById('recent-focus-list');
 
-    if (!projectCount || !domainCount || !certCount || !heatmap || !recentList) return;
+    if (!projectCount || !domainCount || !certCount || !timeline || !recentList) return;
 
     const projects = Array.isArray(data.projects) ? data.projects : [];
     const certs = Array.isArray(data.certificates) ? data.certificates : [];
@@ -313,7 +392,7 @@ function renderActivityDashboard(data) {
     animateMetric(domainCount, domains.size || 0);
     animateMetric(certCount, certs.length);
 
-    renderHeatmap(heatmap);
+    renderMilestones(timeline, projects);
     renderRecentFocus(recentList, projects);
 }
 
@@ -330,15 +409,13 @@ function animateMetric(element, target) {
     requestAnimationFrame(tick);
 }
 
-function renderHeatmap(container) {
+function renderMilestones(container, projects) {
     container.innerHTML = '';
-    const cells = 147;
-    for (let i = 0; i < cells; i += 1) {
-        const cell = document.createElement('div');
-        const value = Math.floor(Math.random() * 5);
-        cell.className = value === 0 ? 'commit-cell' : `commit-cell lv${value}`;
-        container.appendChild(cell);
-    }
+    projects.slice(0, 5).forEach(project => {
+        const item = document.createElement('li');
+        item.innerHTML = `<time datetime="${project.startDate}">${formatPeriod(project.startDate, project.endDate)}</time><strong>${project.name.replace(/\[WIP\]/gi, '').trim()}</strong>`;
+        container.appendChild(item);
+    });
 }
 
 function renderRecentFocus(list, projects) {
@@ -355,21 +432,38 @@ function renderCertifications(certs) {
     const container = document.getElementById('certifications-grid');
     if (!container) return;
 
-    // Map issuer name -> domain for fetching brand logos.
-    const ISSUER_LOGOS = {
-        'Microsoft': 'microsoft.com',
-        'GitHub': 'github.com',
-        'Docker': 'docker.com',
-        'Astronomer': 'astronomer.io',
-        'Atlassian': 'atlassian.com',
-        'Anthropic': 'anthropic.com'
+    const ISSUER_ICONS = {
+        'Microsoft': 'fa-windows',
+        'GitHub': 'fa-github',
+        'Docker': 'fa-cube',
+        'Astronomer': 'fa-star',
+        'Atlassian': 'fa-tasks',
+        'Anthropic': 'fa-code'
     };
 
-    certs.forEach((cert, index) => {
+    const priorities = [
+        'Microsoft Certified: SQL AI Developer Associate',
+        'Microsoft Certified: Azure AI Engineer Associate',
+        'Microsoft Certified: DevOps Engineer Expert',
+        'Microsoft Certified: Fabric Data Engineer Associate',
+        'Career Essentials in GitHub Copilot Professional Certificate',
+        'Docker Foundations Professional Certificate',
+        'DAG Authoring for Apache Airflow 3',
+        'Model Context Protocol: Advanced Topics'
+    ];
+    const priority = new Map(priorities.map((name, index) => [name, index]));
+    const ordered = [...certs].sort((a, b) => {
+        const aRank = priority.has(a.name) ? priority.get(a.name) : 100;
+        const bRank = priority.has(b.name) ? priority.get(b.name) : 100;
+        return aRank - bRank || a.issuer.localeCompare(b.issuer) || b.date.localeCompare(a.date);
+    });
+
+    ordered.forEach((cert, index) => {
         const card = document.createElement('div');
         card.className = 'cert-card';
+        if (priority.has(cert.name)) card.classList.add('featured-cert');
 
-        if (index >= 6) {
+        if (index >= priorities.length) {
             card.style.display = 'none';
             card.classList.add('collapsible-cert');
         }
@@ -377,23 +471,8 @@ function renderCertifications(certs) {
         const icon = document.createElement('div');
         icon.className = 'cert-icon';
 
-        const logoDomain = ISSUER_LOGOS[cert.issuer];
-        if (logoDomain) {
-            icon.classList.add('has-logo');
-            const logo = document.createElement('img');
-            logo.className = 'cert-logo';
-            logo.src = `https://logo.clearbit.com/${logoDomain}`;
-            logo.alt = `${cert.issuer} logo`;
-            logo.loading = 'lazy';
-            // Fall back to the generic icon if the logo fails to load.
-            logo.onerror = () => {
-                icon.classList.remove('has-logo');
-                icon.innerHTML = '<i class="fa fa-certificate"></i>';
-            };
-            icon.appendChild(logo);
-        } else {
-            icon.innerHTML = '<i class="fa fa-certificate"></i>'; // Generic fallback icon
-        }
+        const issuerIcon = ISSUER_ICONS[cert.issuer] || 'fa-certificate';
+        icon.innerHTML = `<i class="fa ${issuerIcon}" aria-hidden="true"></i>`;
 
         const content = document.createElement('div');
         content.className = 'cert-content';
@@ -408,10 +487,11 @@ function renderCertifications(certs) {
         content.appendChild(title);
         content.appendChild(issuer);
 
-        if (cert.url) {
+        if (cert.url && cert.url !== '#') {
             const link = document.createElement('a');
             link.href = cert.url;
             link.target = '_blank';
+            link.rel = 'noopener noreferrer';
             link.className = 'cert-link';
             link.innerHTML = '<i class="fa fa-external-link"></i> Verify';
             content.appendChild(link);
@@ -423,7 +503,7 @@ function renderCertifications(certs) {
     });
 
     const certToggleBtn = document.getElementById('certs-toggle-btn');
-    if (certs.length > 6 && certToggleBtn) {
+    if (ordered.length > priorities.length && certToggleBtn) {
         certToggleBtn.style.display = 'inline-block';
         let certExpanded = false;
         certToggleBtn.addEventListener('click', () => {

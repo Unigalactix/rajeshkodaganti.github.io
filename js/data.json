@@ -1,9 +1,11 @@
 {
   "basics": {
     "name": "Rajesh Kodaganti",
-    "label": "an AI Software Engineer",
+    "label": "an AI Software Engineer and Developer",
     "email": "rajeshkodaganti.work@gmail.com",
-    "summary": "Software Engineer with expertise in Computer Engineering, Python, Azure AI, and Document Intelligence.",
+    "phone": "(747) 366-0793",
+    "summary": "AI Software Engineer and Developer with a Master of Science in Computer Engineering and hands-on experience building Python cloud automation, backend workflows, data pipelines, and AI-powered systems on Azure.",
+    "impact": "Delivered a six-phase outage-management pipeline supporting Severity 0-2 incidents across 70+ Microsoft Identity services.",
     "location": {
       "city": "Redmond",
       "region": "WA",
@@ -19,78 +21,96 @@
   },
   "work": [
     {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "position": "AI Software Engineer (Contract)",
+      "location": "Redmond, Washington",
+      "startDate": "2025-10",
+      "endDate": "Present",
+      "summary": "Developing cloud automation and AI-powered outage-management systems for Microsoft Identity LiveSite operations.",
+      "technologies": ["Python", "Azure Functions", "KQL", "Azure OpenAI", "Logic Apps", "Bicep", "Service Bus", "Key Vault", "Application Insights"],
+      "highlights": [
+        "Designed and developed a six-phase outage-management pipeline for Severity 0-2 incidents across 70+ Microsoft Identity services",
+        "Built Python Azure Functions and KQL workflows for IcM data processing and integrated Azure OpenAI for root-cause classification",
+        "Automated DRI notifications, escalation workflows, and Excel and Word reporting through Logic Apps",
+        "Provisioned secure Azure infrastructure using Bicep, managed identity, Key Vault, Blob Storage, Service Bus, Application Insights, and Entra ID"
+      ]
+    },
+    {
+      "id": "quadrant",
       "name": "Quadrant Technologies",
-      "position": "Software Engineer",
+      "position": "AI Software Engineer",
       "location": "Redmond, Washington",
       "startDate": "2025-08",
       "endDate": "Present",
-      "summary": "Full-time role following internship.",
+      "summary": "Architecting Azure AI solutions for threat intelligence, document processing, and secure retrieval workflows.",
+      "technologies": ["Python", "Azure OpenAI", "Azure Document Intelligence", "Azure AI Search", "RAG", "Cybersecurity"],
       "highlights": [
-        "Designed and implemented ETL processes for security logs and vulnerability reports",
-        "Leveraged machine learning to analyze threat intelligence data for mitigation strategies",
-        "Developed data ingestion systems for endpoint and network security",
-        "Created monitoring dashboards for cloud security and compliance"
+        "Architected and deployed scalable AI solutions with Azure OpenAI and Azure Cognitive Services for threat intelligence and automated mitigation workflows",
+        "Implemented Azure Document Intelligence workflows to extract and structure unstructured data",
+        "Developed RAG architectures integrating Azure AI Search with LLMs for security vulnerability reports"
       ]
     },
     {
+      "id": "quadrant-intern",
       "name": "Quadrant Technologies",
-      "position": "Software Intern",
+      "position": "Artificial Intelligence Intern",
       "location": "Redmond, Washington",
       "startDate": "2025-07",
       "endDate": "2025-08",
+      "summary": "Built data foundations and monitoring views for security-focused AI workflows.",
+      "technologies": ["Python", "ETL", "Data Pipelines", "Threat Intelligence", "Cloud Security"],
       "highlights": [
-        "Transitioned into full-time Software Engineer role after successful internship."
+        "Designed ETL and data-ingestion pipelines for endpoint, network-security, and vulnerability data",
+        "Analyzed threat intelligence and created cloud-security monitoring dashboards"
       ]
     },
     {
+      "id": "qikcell",
       "name": "QikCell by tickioT",
-      "position": "Solutions Engineer Intern",
+      "position": "Assistant to Solutions Engineer (Freelance)",
       "location": "Los Angeles, California",
       "startDate": "2025-01",
       "endDate": "2025-05",
+      "summary": "Supported client field trials and developed Python-based IoT demonstrations for AI-enhanced engineering use cases.",
+      "technologies": ["Python", "IoT", "Signal Processing", "Predictive Maintenance"],
       "highlights": [
-        "Collaborated with sales and technical teams to align customer needs with product capabilities",
-        "Developed and customized technical demonstrations to showcase product features",
-        "Assisted in troubleshooting and documenting solutions, reducing response times by 20%"
+        "Served as technical liaison for client field trials",
+        "Developed Python-based IoT demonstrations for AI-enhanced signal processing and predictive-maintenance use cases"
       ]
     },
     {
+      "id": "coloros",
       "name": "ColorOS",
-      "position": "User Test (Freelance)",
+      "position": "User Tester (Freelance)",
       "location": "Remote",
       "startDate": "2018-06",
       "endDate": "2022-07",
+      "summary": "Tested ColorOS Beta and Alpha releases and provided structured feedback for mobile OS improvements.",
+      "technologies": ["Mobile Testing", "Android", "Beta Testing", "Bug Tracking", "Quality Assurance"],
       "highlights": [
         "Conducted user testing for ColorOS Beta and Alpha versions (5.0 to 12.1)",
-        "Identified bugs and suggested new features based on user feedback",
-        "Collaborated with cross-functional teams to improve software performance"
+        "Documented defects and proposed product improvements in collaboration with cross-functional teams"
       ]
     },
     {
+      "id": "pantech",
       "name": "Pantech ProEd Pvt Ltd",
       "position": "Student Intern",
       "location": "Hyderabad, India",
       "startDate": "2020-06",
       "endDate": "2020-07",
+      "summary": "Contributed to a high-speed 64-bit binary comparator and optimized its design parameters.",
+      "technologies": ["Verilog", "VHDL", "Digital Logic", "Hardware Design"],
       "highlights": [
         "Contributed to the development of a high-speed 64-bit binary comparator",
-        "Optimized design parameters in collaboration with engineering team"
-      ]
-    },
-    {
-      "name": "PeopleLink Unified Communications Pvt. Ltd.",
-      "position": "Product Tester in R&D",
-      "location": "Hyderabad, India",
-      "startDate": "2018-06",
-      "endDate": "2019-05",
-      "highlights": [
-        "Conducted evaluations of prototypes ensuring functionality and quality",
-        "Contributed to the market release of products, reducing post-launch defects by 20%"
+        "Optimized design parameters using Verilog and VHDL"
       ]
     }
   ],
   "education": [
     {
+      "id": "csun",
       "institution": "California State University, Northridge",
       "area": "Computer Engineering",
       "studyType": "Master of Science - MS",
@@ -99,6 +119,7 @@
       "url": "https://www.csun.edu"
     },
     {
+      "id": "jbiet",
       "institution": "Jb Institute Of Engineering and Technology",
       "area": "Electronics and Communication Engineering",
       "studyType": "B-Tech",
@@ -109,42 +130,79 @@
   ],
   "skills": [
     {
-      "name": "Cloud & DevOps",
+      "name": "Software Engineering",
       "keywords": [
-        "Microsoft Azure",
-        "Microsoft DevOps",
-        "Docker",
-        "Apache Airflow",
-        "IT Service Management (ITSM)"
-      ]
-    },
-    {
-      "name": "AI & Data Engineering",
-      "keywords": [
-        "Azure AI",
-        "Microsoft Fabric",
-        "Generative AI",
-        "OpenAI API",
         "Python",
-        "SQL"
+        "JavaScript",
+        "FastAPI",
+        "REST APIs",
+        "Microservices",
+        "ETL & Data Pipelines",
+        "SQL",
+        "Testing & Troubleshooting"
       ]
     },
     {
-      "name": "Tools",
+      "name": "Azure & DevOps",
       "keywords": [
-        "GitHub Copilot",
-        "Microsoft 365",
-        "Atlassian Suite"
+        "Azure Functions",
+        "Logic Apps",
+        "Service Bus",
+        "Blob Storage",
+        "Key Vault",
+        "Application Insights",
+        "Entra ID",
+        "Bicep",
+        "CI/CD"
+      ]
+    },
+    {
+      "name": "AI & Machine Learning",
+      "keywords": [
+        "Azure OpenAI",
+        "Azure AI Search",
+        "Azure Document Intelligence",
+        "RAG",
+        "LLMs",
+        "NLP",
+        "PyTorch",
+        "TensorFlow",
+        "Model Context Protocol"
       ]
     }
   ],
   "projects": [
     {
+      "id": "icm-outage",
+      "name": "IcM Outage Automation - Microsoft Identity LiveSite",
+      "startDate": "2025-10",
+      "endDate": "Present",
+      "featured": true,
+      "visualType": "architecture",
+      "description": "A six-phase outage-management system that automates incident ingestion, enrichment, classification, validation, escalation, and reporting for Microsoft Identity LiveSite operations.",
+      "problem": "Severity 0-2 incident review required coordinated processing across more than 70 services, multiple data sources, DRI workflows, and operational reports.",
+      "approach": "Built event-driven Python Azure Functions and KQL workflows, added Azure OpenAI classification, automated Logic Apps escalation, and provisioned secure infrastructure with Bicep and managed identity.",
+      "impact": "Delivered a production-oriented workflow supporting Severity 0-2 incidents across 70+ Microsoft Identity services with automated reporting and operational runbooks.",
+      "highlights": [
+        "Implemented six phases covering incident ingestion, enrichment, classification, validation, escalation, and reporting.",
+        "Integrated Azure OpenAI for root-cause and recurring-pattern classification.",
+        "Automated DRI notifications and generated Excel and Word reports for incident review.",
+        "Provisioned Key Vault, Blob Storage, Service Bus, Application Insights, and Entra ID integrations through Bicep."
+      ],
+      "keywords": ["Python", "Azure Functions", "KQL", "Azure OpenAI", "Logic Apps", "Bicep"]
+    },
+    {
       "id": "jobpilot",
       "name": "JobPilot: AI-Powered Job Application Co-Pilot",
       "startDate": "2026-02",
       "endDate": "Present",
+      "featured": true,
+      "image": "images/jobpilot-dashboard.png",
+      "imageAlt": "JobPilot job-search dashboard showing role search and application tools",
       "description": "A lightweight, browser-only application that streamlines the job search through AI automation. JobPilot aggregates listings from Adzuna, JSearch, and USAJobs so users can find roles and optimize their application materials in one place.",
+      "problem": "Job seekers must move between fragmented job boards and repeatedly tailor application materials while protecting sensitive resumes and API credentials.",
+      "approach": "Built a browser-first JavaScript and Python experience with a Cloudflare Worker proxy, multi-source job aggregation, AI-assisted tailoring, and client-side AES-GCM encryption.",
+      "impact": "Combined search, resume tailoring, and privacy-preserving storage into one deployable workflow without a traditional application database.",
       "highlights": [
         "Aggregates job listings from Adzuna, JSearch, and USAJobs into a single search experience.",
         "Static site generated with Python and hosted on GitHub Pages, paired with a thin Cloudflare Worker proxy to eliminate a traditional backend database.",
@@ -165,7 +223,12 @@
       "name": "🛡️ Sentinel: Autonomous DevOps Orchestrator [WIP]",
       "startDate": "2025-11",
       "endDate": "Present",
+      "featured": true,
+      "visualType": "architecture",
       "description": "An AI-driven bridge between Jira and GitHub designed to automate the manual overhead of the DevOps lifecycle, taking tickets from 'To Do' to 'Done' with minimal human intervention. Associated with Quadrant Technologies.",
+      "problem": "Engineering teams lose time transferring context and status between Jira, source control, coding agents, and CI/CD systems.",
+      "approach": "Designed an event-driven orchestration layer using Azure OpenAI, GitHub Copilot, OAuth-scoped automation, and an MCP server for agent tool access.",
+      "impact": "Automated ticket polling, branch and pull-request creation, implementation handoff, and approval-aware workflow progression.",
       "highlights": [
         "Autonomous polling that scans Jira boards every 30 seconds for new tickets.",
         "AI-powered implementation using Azure OpenAI and GitHub Copilot to analyze repository structures and generate context-aware code fixes.",
@@ -187,7 +250,11 @@
       "name": "GasOps MTR extraction",
       "startDate": "2025-09",
       "endDate": "Present",
+      "visualType": "architecture",
       "description": "Designed a robust system for JSON extraction and document intelligence using Azure OCR and OpenAI.",
+      "problem": "Material test reports contain unstructured certificate data that must be retrieved and normalized reliably for downstream processing.",
+      "approach": "Combined Azure Document Intelligence OCR, OpenAI mapping, certificate-based API retrieval, and defensive JSON parsing behind Python and FastAPI workflows.",
+      "impact": "Produced structured JSON by HeatNumber with a backwards-compatible command-line workflow for existing consumers.",
       "highlights": [
         "Implemented Azure Document Intelligence OCR and AI mapping supporting Azure OpenAI",
         "Built certificate and token-based API fetch by HeatNumber",
@@ -199,8 +266,7 @@
         "Python",
         "FastAPI",
         "API Testing"
-      ],
-      "github": "https://github.com/Unigalactix/GasOps-DI-JSON"
+      ]
     },
     {
       "name": "Image Denoising using Deep Learning",

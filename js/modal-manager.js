@@ -1,519 +1,200 @@
-// Modal Manager for Experience and Project Details
+// Accessible detail dialogs backed by js/data.json.
 class ModalManager {
     constructor() {
-        this.experienceData = this.getExperienceData();
-        this.educationData = this.getEducationData();
-        this.projectData = this.getProjectData();
-        this.init();
-    }
+        this.data = window.PORTFOLIO_DATA || null;
+        this.returnFocus = null;
+        this.handleKeydown = this.handleKeydown.bind(this);
 
-    init() {
-        // Add click outside to close functionality
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('detail-modal')) {
-                this.closeModal(e.target.id);
+        document.addEventListener('click', event => {
+            if (event.target.classList.contains('detail-modal')) {
+                this.closeModal(event.target.id);
             }
         });
+        document.addEventListener('keydown', this.handleKeydown);
+    }
 
-        // Add escape key to close functionality
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                this.closeAllModals();
-            }
+    setData(data) {
+        this.data = data;
+    }
+
+    openExperienceModal(id) {
+        const job = this.data?.work?.find(item => item.id === id);
+        if (!job) return;
+
+        this.showModal({
+            id: 'experienceModal',
+            className: 'experience-modal',
+            title: `${job.position} at ${job.name}`,
+            body: `
+                <section class="modal-section">
+                    <h3><i class="fa fa-briefcase" aria-hidden="true"></i> Role</h3>
+                    <p><strong>Company:</strong> ${this.escape(job.name)}</p>
+                    <p><strong>Location:</strong> ${this.escape(job.location)}</p>
+                    <p><strong>Duration:</strong> ${this.formatPeriod(job.startDate, job.endDate)}</p>
+                    <p>${this.escape(job.summary)}</p>
+                </section>
+                ${this.listSection('Key contributions', 'fa-tasks', job.highlights)}
+                ${this.tagsSection('Technologies', 'fa-cogs', job.technologies)}
+            `
         });
     }
 
-    getExperienceData() {
-        return {
-            microsoft: {
-                title: "Microsoft",
-                role: "AI Software Engineer",
-                period: "Mar 2026 – Present",
-                icon: "🚀",
-                description: "Joining the AI Engineering team. Focusing on cutting-edge AI architectures and enterprise solutions.",
-                duties: [
-                    "Architecting and developing AI software solutions"
-                ],
-                technologies: ["AI", "Software Engineering", "Cloud Architecture"],
-                achievements: [
-                    "Joined Microsoft AI Team in Redmond"
-                ]
-            },
-            quadrant: {
-                title: "Quadrant Technologies",
-                role: "AI Software Engineer",
-                period: "Aug 2025 – Present",
-                icon: "💼",
-                description: "Cybersecurity & AI applications development. Architected and deployed scalable AI solutions using Azure OpenAI and Azure Cognitive Services, enhancing threat intelligence analysis and automating data-driven mitigation strategies.",
-                duties: [
-                    "Architected and deployed scalable AI solutions using Azure OpenAI and Azure Cognitive Services",
-                    "Implemented Document Intelligence workflows to extract and structure unstructured data",
-                    "Developed RAG (Retrieval-Augmented Generation) architectures by integrating Azure AI Search with LLMs",
-                    "Designed and implemented ETL processes for security logs and vulnerability reports",
-                    "Created monitoring dashboards for cloud security, ensuring compliance and safeguarding sensitive information"
-                ],
-                technologies: ["Azure OpenAI", "Azure Cognitive Services", "Document Intelligence", "RAG", "Python", "ETL", "Cybersecurity"],
-                achievements: [
-                    "Significantly reduced manual processing time and improved data reliability for downstream ML models",
-                    "Enhanced risk analysis capabilities through advanced threat intelligence",
-                    "Improved data ingestion reliability for endpoint and network security"
-                ]
-            },
-            qikcell: {
-                title: "QikCell by tickioT",
-                role: "Solutions Engineer (Internship)",
-                period: "January 2025 – May 2025",
-                icon: "⚡",
-                description: "Technical demonstrations & client solutions. Delivered comprehensive technical presentations and developed tailored solutions for enterprise clients.",
-                duties: [
-                    "Conducted technical product demonstrations for potential enterprise clients",
-                    "Developed customized IoT solutions based on client requirements",
-                    "Created comprehensive technical documentation and user guides",
-                    "Collaborated with sales team to identify client needs and propose solutions",
-                    "Provided technical support and troubleshooting for existing clients"
-                ],
-                technologies: ["Technical Sales", "Client Solutions", "Presentations", "IoT Systems", "Solution Architecture", "Technical Writing"],
-                achievements: [
-                    "Successfully demonstrated solutions to 15+ enterprise clients",
-                    "Achieved 80% client satisfaction rate in post-demonstration surveys",
-                    "Contributed to 3 major client acquisitions through technical expertise"
-                ]
-            },
-            coloros: {
-                title: "ColorOS (OPPO)",
-                role: "User Test Specialist (Freelance)",
-                period: "June 2018 – July 2022",
-                icon: "📱",
-                description: "Beta testing & user experience optimization. Conducted comprehensive testing cycles and provided detailed feedback for mobile OS improvements.",
-                duties: [
-                    "Performed comprehensive beta testing of ColorOS mobile operating system",
-                    "Identified and documented software bugs, usability issues, and performance problems",
-                    "Provided detailed feedback on user interface and user experience improvements",
-                    "Participated in testing cycles for major OS releases and updates",
-                    "Collaborated with development team through bug tracking systems"
-                ],
-                technologies: ["Mobile Testing", "UX Optimization", "Android", "Beta Testing", "Bug Tracking", "Quality Assurance"],
-                achievements: [
-                    "Tested and provided feedback for 20+ ColorOS releases over 4 years",
-                    "Identified critical bugs that improved system stability by 15%",
-                    "Recognized as top contributor in beta testing community"
-                ]
-            },
-            pantech: {
-                title: "Pantech ProEd Pvt Ltd",
-                role: "Engineering Intern",
-                period: "June 2020 – July 2020",
-                icon: "🔧",
-                description: "64-bit binary comparator development. Designed and implemented digital logic circuits with focus on performance optimization and hardware efficiency.",
-                duties: [
-                    "Designed and implemented 64-bit binary comparator using digital logic principles",
-                    "Performed circuit simulation and verification using industry-standard tools",
-                    "Optimized circuit design for reduced power consumption and improved performance",
-                    "Created technical documentation and test reports for design validation",
-                    "Collaborated with senior engineers on hardware design best practices"
-                ],
-                technologies: ["VLSI Design", "Digital Logic", "Hardware Testing", "Circuit Design", "Simulation Tools", "Performance Optimization"],
-                achievements: [
-                    "Successfully designed and verified 64-bit binary comparator circuit",
-                    "Achieved 20% improvement in power efficiency compared to baseline design",
-                    "Completed project 2 weeks ahead of schedule with full functionality"
-                ]
-            },
-            peoplelink: {
-                title: "PeopleLink Unified Communications",
-                role: "Product Tester - R&D Department",
-                period: "June 2018 – May 2019",
-                icon: "🔬",
-                description: "Product evaluation & quality assurance. Performed systematic testing protocols and contributed to product development lifecycle improvements.",
-                duties: [
-                    "Conducted systematic testing of communication products and systems",
-                    "Developed and executed comprehensive test plans and procedures",
-                    "Performed quality assurance testing for hardware and software components",
-                    "Documented test results and provided recommendations for improvements",
-                    "Participated in product development lifecycle and design reviews"
-                ],
-                technologies: ["Product Testing", "Quality Assurance", "R&D Protocols", "Communication Systems", "Test Planning", "Documentation"],
-                achievements: [
-                    "Tested 10+ communication products with 95% defect detection rate",
-                    "Improved testing efficiency by 30% through process optimization",
-                    "Contributed to 2 major product launches with zero critical defects"
-                ]
-            }
-        };
-    }
-    getEducationData() {
-        return {
-            csun: {
-                title: "CSUN - California State University, Northridge",
-                degree: "Master of Science in Computer Engineering",
-                period: "Aug 2022 - May 2025",
-                icon: "🎓",
-                description: "Focused on advanced Computer Engineering concepts including AI Systems, Network Security, and Embedded Systems. Maintained a high GPA of 3.8/4.0.",
-                courses: [
-                    "Advanced Computer Architecture",
-                    "Network Security & Cryptography",
-                    "Machine Learning & Data Mining",
-                    "Embedded Systems Design",
-                    "Digital Image Processing",
-                    "Software Engineering"
-                ],
-                achievements: [
-                    "GPA: 3.8/4.0",
-                    "Published research paper on 'AI in Network Security'",
-                    "Teaching Assistant for Digital Logic Design",
-                    "Lead Developer for Graduate Capstone Project"
-                ]
-            },
-            jbiet: {
-                title: "J.B. Institute of Engineering & Technology",
-                degree: "Bachelor of Technology in Electronics & Comm.",
-                period: "July 2019 - June 2022",
-                icon: "🏫",
-                description: "Comprehensive foundation in Electronics and Communication Engineering. Active participant in technical clubs and hackathons.",
-                courses: [
-                    "Digital Signal Processing",
-                    "VLSI Design",
-                    "Microprocessors & Microcontrollers",
-                    "Computer Networks",
-                    "Data Structures & Algorithms"
-                ],
-                achievements: [
-                    "Graduated with First Class with Distinction",
-                    "Winner of Intra-college Robotics Competition",
-                    "Student Coordinator for Technical Fest"
-                ]
-            }
-        };
-    }
-
-    openEducationModal(eduId) {
-        const education = this.educationData[eduId];
+    openEducationModal(id) {
+        const education = this.data?.education?.find(item => item.id === id);
         if (!education) return;
 
-        const modalHtml = `
-            <div id="educationModal" class="detail-modal education-modal">
-                <div class="detail-modal-content">
-                    <div class="detail-modal-header">
-                        <h2>${education.icon} ${education.title}</h2>
-                        <span class="detail-close-btn" onclick="modalManager.closeModal('educationModal')">&times;</span>
-                    </div>
-                    <div class="detail-modal-body">
-                        <div class="modal-section">
-                            <h3><i class="fa fa-graduation-cap"></i>Degree Details</h3>
-                            <p><strong>Degree:</strong> ${education.degree}</p>
-                            <p><strong>Duration:</strong> ${education.period}</p>
-                            <p><strong>Overview:</strong> ${education.description}</p>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <h3><i class="fa fa-book"></i>Key Coursework</h3>
-                            <div class="modal-tech-tags">
-                               ${education.courses.map(course => `<span class="modal-tech-tag">${course}</span>`).join('')}
-                            </div>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <div class="modal-achievements">
-                                <h3><i class="fa fa-medal"></i>Achievements</h3>
-                                <ul>
-                                    ${education.achievements.map(achievement => `<li>${achievement}</li>`).join('')}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        // Remove existing modal if any
-        const existingModal = document.getElementById('educationModal');
-        if (existingModal) {
-            existingModal.remove();
-        }
-
-        // Add new modal to body
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-        // Show modal
-        document.getElementById('educationModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-    getProjectData() {
-        return {
-            sentinel: {
-                title: "🛡️ Sentinel: Autonomous DevOps Orchestrator [WIP]",
-                category: "DevOps • AI • Automation • Nov 2025 - Present",
-                icon: "🛡️",
-                description: "Sentinel is an AI-driven bridge between Jira and GitHub designed to automate the manual overhead of the DevOps lifecycle. Sentinel continuously monitors Jira boards for new tasks and autonomously handles the implementation process—taking tickets from \"To Do\" to \"Done\" with minimal human intervention.",
-                objectives: [
-                    "Automate manual overhead of the DevOps lifecycle",
-                    "Close the loop between project management and version control"
-                ],
-                technologies: ["Azure OpenAI", "GitHub Copilot", "Model Context Protocol (MCP)", "CI/CD", "Python"],
-                achievements: [
-                    "Autonomous Polling: Automatically scans Jira boards every 30 seconds for new tickets",
-                    "AI-Powered Implementation: Leverages Azure OpenAI and GitHub Copilot to analyze repository structures and generate context-aware code fixes",
-                    "Automated PR Management: Creates feature branches, triggers Copilot for implementation, and manages the approval/merge flow once CI/CD checks pass",
-                    "Multi-Tenant Architecture: Supports per-user GitHub OAuth, securely under individual user contexts",
-                    "MCP Integration: Includes an MCP server allowing AI agents to interact directly with the orchestration tools"
-                ]
-            },
-            convir: {
-                title: "Image Denoising using Deep Learning (ConvIR)",
-                category: "Machine Learning • Computer Vision • Dec 2024 - May 2025",
-                icon: "🤖",
-                description: "Developed ConvIR, a sophisticated deep learning framework for image denoising targeting additive white Gaussian noise (AWGN) using dual-domain learning approach. Features UNet-inspired architecture with multi-shape attention and deep residual connections for robust grayscale image restoration.",
-                objectives: [
-                    "Develop advanced deep learning framework for image denoising",
-                    "Implement dual-domain learning approach for robust noise reduction",
-                    "Create UNet-inspired architecture with multi-shape attention mechanisms",
-                    "Achieve superior performance compared to existing denoising methods"
-                ],
-                technologies: ["Python", "TensorFlow", "PyTorch", "FFT Analysis", "Computer Vision", "Deep Learning"],
-                achievements: [
-                    "PSNR gains >12 dB at high noise levels (σ=25)",
-                    "95% reduction in residual noise (low-noise conditions)",
-                    ">30 dB PSNR at σ=7.5, ~28 dB PSNR at σ=10",
-                    "Composite loss: MSE + FFT spectral + noise regularization",
-                    "Trained on Set12, BSD68, Urban100 datasets"
-                ]
-            },
-            cars: {
-                title: "Pre-owned Cars Pricing Forecast",
-                category: "Data Science • Machine Learning • Aug 2022 - Dec 2022",
-                icon: "📊",
-                description: "Developed and implemented a Random Forest Regression model in R for pre-owned car price forecasting. Conducted comprehensive data preprocessing including handling missing values and converting categorical features for a dataset of 48,904 rows.",
-                objectives: [
-                    "Build accurate pricing model for pre-owned vehicles",
-                    "Implement comprehensive data preprocessing pipeline",
-                    "Handle missing values and categorical feature encoding",
-                    "Achieve high prediction accuracy using ensemble methods"
-                ],
-                technologies: ["R Programming", "Random Forest", "Data Preparation", "Regression Analysis", "Feature Engineering", "Statistical Modeling"],
-                achievements: [
-                    "85.67% prediction accuracy achieved",
-                    "Processed 48,904 rows of automotive data",
-                    "Advanced feature engineering & preprocessing",
-                    "Robust categorical variable handling"
-                ]
-            },
-            router: {
-                title: "1X3 Router Design and Verification",
-                category: "VLSI Design • Hardware Verification • Dec 2021 - Jan 2022",
-                icon: "🔧",
-                description: "Designed a 1x3 router that directs packets to three different destinations using Verilog HDL. Implemented synthesis constraints and comprehensive verification through testbenches, utilizing Quartus Prime for synthesis and ModelSim for simulation verification.",
-                objectives: [
-                    "Design efficient 1x3 packet routing system",
-                    "Implement comprehensive verification methodology",
-                    "Optimize for performance and resource utilization",
-                    "Ensure reliable packet delivery to multiple destinations"
-                ],
-                technologies: ["Verilog HDL", "RTL Design", "Quartus Prime", "ModelSim", "FPGA Design", "Hardware Verification"],
-                achievements: [
-                    "Successful packet routing to 3 destinations",
-                    "Complete synthesis constraint implementation",
-                    "Comprehensive testbench verification",
-                    "Hardware simulation validation"
-                ]
-            },
-            assistive: {
-                title: "Raspberry Pi Assistive Technologies",
-                category: "IoT • Accessibility • Aug 2021 - Nov 2021",
-                icon: "🤖",
-                description: "Developed reading aids for visually impaired individuals using Raspberry Pi technology. Created OCR-based prototype that captures document images and converts them to audio using Tesseract library and Python, supporting both online and offline processing methods.",
-                objectives: [
-                    "Create accessible reading solution for visually impaired users",
-                    "Implement reliable OCR technology for text recognition",
-                    "Develop text-to-speech conversion system",
-                    "Ensure both online and offline functionality"
-                ],
-                technologies: ["Raspberry Pi", "Python", "Tesseract OCR", "Computer Vision", "Text-to-Speech", "IoT Development"],
-                achievements: [
-                    "OCR technology integration (online/offline)",
-                    "Document-to-audio conversion system",
-                    "Enhanced accessibility for visually impaired",
-                    "Educational setting optimization"
-                ]
-            },
-            camera: {
-                title: "PeopleLink \"Look At Me\" Controller",
-                category: "Embedded Systems • PCB Design • Nov 2018 - Dec 2018",
-                icon: "📹",
-                description: "Spearheaded circuit design and testing for sophisticated camera system optimized for conference rooms and educational settings. Developed both wired and wireless models with intuitive control systems enabling automatic speaker tracking and focus adjustment.",
-                objectives: [
-                    "Design intelligent camera control system for conference rooms",
-                    "Implement automatic speaker tracking functionality",
-                    "Develop both wired and wireless control options",
-                    "Optimize for educational and professional environments"
-                ],
-                technologies: ["PCB Design", "Embedded C", "Camera Systems", "Wireless Control", "Circuit Design", "Hardware Testing"],
-                achievements: [
-                    "Automatic speaker tracking & focus",
-                    "Dual model development (wired/wireless)",
-                    "Simplified installation & operation",
-                    "Enhanced collaborative environment efficiency"
-                ]
-            }
-        };
+        this.showModal({
+            id: 'educationModal',
+            className: 'education-modal',
+            title: education.institution,
+            body: `
+                <section class="modal-section">
+                    <h3><i class="fa fa-graduation-cap" aria-hidden="true"></i> Degree</h3>
+                    <p><strong>${this.escape(education.studyType)}</strong> in ${this.escape(education.area)}</p>
+                    <p><strong>Duration:</strong> ${this.formatPeriod(education.startDate, education.endDate)}</p>
+                    ${education.score ? `<p><strong>Score:</strong> ${this.escape(education.score)}</p>` : ''}
+                    ${education.url ? `<p><a class="btn-text" href="${this.escape(education.url)}" target="_blank" rel="noopener noreferrer"><i class="fa fa-external-link" aria-hidden="true"></i> Institution website</a></p>` : ''}
+                </section>
+            `
+        });
     }
 
-    openExperienceModal(expId) {
-        const experience = this.experienceData[expId];
-        if (!experience) return;
-
-        const modalHtml = `
-            <div id="experienceModal" class="detail-modal experience-modal">
-                <div class="detail-modal-content">
-                    <div class="detail-modal-header">
-                        <h2>${experience.icon} ${experience.title}</h2>
-                        <span class="detail-close-btn" onclick="modalManager.closeModal('experienceModal')">&times;</span>
-                    </div>
-                    <div class="detail-modal-body">
-                        <div class="modal-section">
-                            <h3><i class="fa fa-briefcase"></i>Position Details</h3>
-                            <p><strong>Role:</strong> ${experience.role}</p>
-                            <p><strong>Duration:</strong> ${experience.period}</p>
-                            <p><strong>Overview:</strong> ${experience.description}</p>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <h3><i class="fa fa-tasks"></i>Key Responsibilities</h3>
-                            <ul>
-                                ${experience.duties.map(duty => `<li>${duty}</li>`).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <h3><i class="fa fa-cogs"></i>Technologies & Skills</h3>
-                            <div class="modal-tech-tags">
-                                ${experience.technologies.map(tech => `<span class="modal-tech-tag">${tech}</span>`).join('')}
-                            </div>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <div class="modal-achievements">
-                                <h3><i class="fa fa-trophy"></i>Key Achievements</h3>
-                                <ul>
-                                    ${experience.achievements.map(achievement => `<li>${achievement}</li>`).join('')}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        // Remove existing modal if any
-        const existingModal = document.getElementById('experienceModal');
-        if (existingModal) {
-            existingModal.remove();
-        }
-
-        // Add new modal to body
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-        // Show modal
-        document.getElementById('experienceModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-
-    openProjectModal(projectId) {
-        const project = this.projectData[projectId];
+    openProjectModal(id) {
+        const project = this.data?.projects?.find(item => item.id === id);
         if (!project) return;
 
-        const modalHtml = `
-            <div id="projectModal" class="detail-modal project-modal">
-                <div class="detail-modal-content">
-                    <div class="detail-modal-header">
-                        <h2>${project.icon} ${project.title}</h2>
-                        <span class="detail-close-btn" onclick="modalManager.closeModal('projectModal')">&times;</span>
-                    </div>
-                    <div class="detail-modal-body">
-                        <div class="modal-section">
-                            <h3><i class="fa fa-info-circle"></i>Project Overview</h3>
-                            <p><strong>Category:</strong> ${project.category}</p>
-                            <p><strong>Description:</strong> ${project.description}</p>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <h3><i class="fa fa-target"></i>Project Objectives</h3>
-                            <ul>
-                                ${project.objectives.map(objective => `<li>${objective}</li>`).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <h3><i class="fa fa-code"></i>Technologies Used</h3>
-                            <div class="modal-tech-tags">
-                                ${project.technologies.map(tech => `<span class="modal-tech-tag">${tech}</span>`).join('')}
-                            </div>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <div class="modal-achievements">
-                                <h3><i class="fa fa-star"></i>Key Results & Achievements</h3>
-                                <ul>
-                                    ${project.achievements.map(achievement => `<li>${achievement}</li>`).join('')}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        const links = [
+            project.github ? `<a class="btn-text" href="${this.escape(project.github)}" target="_blank" rel="noopener noreferrer"><i class="fa fa-github" aria-hidden="true"></i> Code</a>` : '',
+            project.url ? `<a class="btn-text" href="${this.escape(project.url)}" target="_blank" rel="noopener noreferrer"><i class="fa fa-external-link" aria-hidden="true"></i> Live project</a>` : ''
+        ].filter(Boolean).join('');
 
-        // Remove existing modal if any
-        const existingModal = document.getElementById('projectModal');
-        if (existingModal) {
-            existingModal.remove();
-        }
-
-        // Add new modal to body
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-        // Show modal
-        document.getElementById('projectModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        this.showModal({
+            id: 'projectModal',
+            className: 'project-modal',
+            title: project.name.replace(/\[WIP\]/gi, '').trim(),
+            body: `
+                <section class="modal-section">
+                    <h3><i class="fa fa-info-circle" aria-hidden="true"></i> Overview</h3>
+                    <p>${this.escape(project.description)}</p>
+                </section>
+                ${project.problem ? this.textSection('Problem', 'fa-exclamation-circle', project.problem) : ''}
+                ${project.approach ? this.textSection('Approach', 'fa-code', project.approach) : ''}
+                ${project.impact ? this.textSection('Impact', 'fa-line-chart', project.impact) : ''}
+                ${this.listSection('Evidence', 'fa-check-circle', project.highlights)}
+                ${this.tagsSection('Technologies', 'fa-cogs', project.keywords)}
+                ${links ? `<div class="modal-actions">${links}</div>` : ''}
+            `
+        });
     }
 
-    closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            // Remove modal from DOM after animation
-            setTimeout(() => {
-                modal.remove();
-            }, 300);
-        }
+    showModal({ id, className, title, body }) {
+        this.closeAllModals();
+        this.returnFocus = document.activeElement;
+
+        const modal = document.createElement('div');
+        modal.id = id;
+        modal.className = `detail-modal ${className}`;
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-labelledby', `${id}-title`);
+        modal.innerHTML = `
+            <div class="detail-modal-content">
+                <div class="detail-modal-header">
+                    <h2 id="${id}-title">${this.escape(title)}</h2>
+                    <button type="button" class="detail-close-btn" aria-label="Close details">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="detail-modal-body">${body}</div>
+            </div>`;
+
+        modal.querySelector('.detail-close-btn').addEventListener('click', () => this.closeModal(id));
+        document.body.appendChild(modal);
+        document.body.style.overflow = 'hidden';
+        modal.style.display = 'flex';
+        modal.querySelector('.detail-close-btn').focus();
+    }
+
+    closeModal(id) {
+        const modal = document.getElementById(id);
+        if (!modal) return;
+        modal.remove();
+        document.body.style.overflow = '';
+        if (this.returnFocus instanceof HTMLElement) this.returnFocus.focus();
+        this.returnFocus = null;
     }
 
     closeAllModals() {
-        const modals = document.querySelectorAll('.detail-modal');
-        modals.forEach(modal => {
-            modal.style.display = 'none';
-            setTimeout(() => {
-                modal.remove();
-            }, 300);
-        });
-        document.body.style.overflow = 'auto';
+        document.querySelectorAll('.detail-modal').forEach(modal => modal.remove());
+        document.body.style.overflow = '';
+    }
+
+    handleKeydown(event) {
+        const modal = document.querySelector('.detail-modal');
+        if (!modal) return;
+
+        if (event.key === 'Escape') {
+            this.closeModal(modal.id);
+            return;
+        }
+
+        if (event.key !== 'Tab') return;
+        const focusable = [...modal.querySelectorAll('button, a[href], input, textarea, [tabindex]:not([tabindex="-1"])')];
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    }
+
+    textSection(title, icon, text) {
+        return `<section class="modal-section"><h3><i class="fa ${icon}" aria-hidden="true"></i> ${title}</h3><p>${this.escape(text)}</p></section>`;
+    }
+
+    listSection(title, icon, items = []) {
+        if (!items.length) return '';
+        return `<section class="modal-section"><h3><i class="fa ${icon}" aria-hidden="true"></i> ${title}</h3><ul>${items.map(item => `<li>${this.escape(item)}</li>`).join('')}</ul></section>`;
+    }
+
+    tagsSection(title, icon, items = []) {
+        if (!items.length) return '';
+        return `<section class="modal-section"><h3><i class="fa ${icon}" aria-hidden="true"></i> ${title}</h3><div class="modal-tech-tags">${items.map(item => `<span class="modal-tech-tag">${this.escape(item)}</span>`).join('')}</div></section>`;
+    }
+
+    formatPeriod(startDate, endDate) {
+        const format = value => {
+            if (!value || value === 'Present') return value || '';
+            const [year, month] = value.split('-').map(Number);
+            return new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' })
+                .format(new Date(year, (month || 1) - 1, 1));
+        };
+        return `${format(startDate)} - ${format(endDate)}`;
+    }
+
+    escape(value = '') {
+        const element = document.createElement('div');
+        element.textContent = String(value);
+        return element.innerHTML;
     }
 }
 
-// Global functions for onclick handlers
-function openExperienceModal(expId) {
-    modalManager.openExperienceModal(expId);
+function openExperienceModal(id) {
+    window.modalManager?.openExperienceModal(id);
 }
 
-function openProjectModal(projectId) {
-    modalManager.openProjectModal(projectId);
+function openProjectModal(id) {
+    window.modalManager?.openProjectModal(id);
 }
 
-function openEducationModal(eduId) {
-    modalManager.openEducationModal(eduId);
+function openEducationModal(id) {
+    window.modalManager?.openEducationModal(id);
 }
 
-// Initialize modal manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.modalManager = new ModalManager();
 });

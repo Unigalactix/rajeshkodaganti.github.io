@@ -2,7 +2,7 @@
 
 Live Portfolio: [https://rajeshkodaganti.com/](https://rajeshkodaganti.com/)
 
-This repository contains Rajesh Kodaganti's personal portfolio website with a modern coder-first UI system, interactive sections, and data-driven content rendering.
+This repository contains Rajesh Kodaganti's AI Software Engineer and Developer portfolio, with production-focused case studies, accessible interactions, and data-driven content rendering.
 
 ## Highlights
 
@@ -10,12 +10,12 @@ This repository contains Rajesh Kodaganti's personal portfolio website with a mo
 - Professional developer UI system with semantic design tokens.
 - Sticky glass navigation with active section tracking and runtime breadcrumb.
 - Command Palette (Cmd/Ctrl + K) for quick navigation.
-- Dynamic About, Skills, Projects, and Certifications rendered from `js/data.json`.
+- Dynamic About, Skills, Experience, Projects, Certifications, modals, and resume content sourced from `js/data.json`.
 - Case-study project cards with file-tab chrome and project status chips.
-- Animated architecture/system-map section and coding activity dashboard.
+- Animated architecture/system-map section and verified project milestone timeline.
 - Build logs marquee generated from live project/work data.
 - Interactive detail modals for Experience, Education, and Projects.
-- Integrated chatbot and multi-game center.
+- Professional portfolio assistant and an on-demand Creative Lab.
 - Responsive layout with mobile-first polish and reduced-motion support.
 
 ## Core UI Features
@@ -50,10 +50,10 @@ This repository contains Rajesh Kodaganti's personal portfolio website with a mo
 5. System Map
 6. Experience
 7. Education
-8. Work and Projects
+8. Selected Engineering Case Studies
 9. Certifications
-10. Debug Break (Games)
-11. Coding Activity
+10. Creative Lab
+11. Verified Project Activity
 12. Contact
 13. Footer + Socials
 
@@ -81,6 +81,18 @@ python3 -m http.server 8000
 
 - `http://127.0.0.1:8000`
 
+### Content and resume workflow
+
+`js/data.json` is the source of truth for profile, experience, education, skills, projects, and certifications. After changing professional content, regenerate and validate the site:
+
+```bash
+python -m pip install -r requirements.txt
+python build_resume.py
+python scripts/validate_portfolio.py
+```
+
+Set `CHECK_EXTERNAL_LINKS=1` to include concurrent external-link checks. GitHub Actions runs the full workflow before deployment.
+
 ## Main Files
 
 - `index.html`: Page structure and global UI shell.
@@ -88,6 +100,8 @@ python3 -m http.server 8000
 - `js/scripts.js`: Navigation telemetry, command palette, splash logic, interactive effects.
 - `js/content-loader.js`: Data-driven section rendering.
 - `js/data.json`: Content source for profile, projects, and certifications.
+- `build_resume.py`: Generates the one-, two-, and three-page PDF resumes from `js/data.json`.
+- `scripts/validate_portfolio.py`: Validates content consistency, assets, metadata, JavaScript, accessibility basics, links, and generated PDFs.
 
 ## Accessibility and Performance Notes
 

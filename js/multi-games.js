@@ -1,5 +1,5 @@
 // Multi-Game Center - Complete Game Collection
-document.addEventListener('DOMContentLoaded', function () {
+window.initMultiGames = function () {
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     // Modal and UI elements
     const gameModal = document.getElementById('gameModal');
@@ -1394,4 +1394,4 @@ document.addEventListener('DOMContentLoaded', function () {
         gameContainer.style.display = 'none';
         console.log('Game container is hidden');
     }
-});
+};

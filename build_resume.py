@@ -2,6 +2,7 @@
 import json
 import os
 import shutil
+from datetime import datetime
 
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
@@ -23,85 +24,25 @@ with open(os.path.join(ROOT, "js", "data.json"), "r", encoding="utf-8") as f:
 
 basics = data["basics"]
 
-SUMMARY_FULL = (
-    "AI Software Engineer specializing in applied AI, data engineering, and cloud-native "
-    "solutions on Microsoft Azure. Experienced in building LLM-powered automation, document "
-    "intelligence pipelines, and secure DevOps workflows. Microsoft-certified across Azure AI, "
-    "Data, and DevOps, with a track record of turning complex systems into reliable, "
-    "production-ready products."
-)
-SUMMARY_SHORT = (
-    "AI Software Engineer specializing in applied AI, data engineering, and cloud-native "
-    "Azure solutions. Microsoft-certified across Azure AI, Data, and DevOps, with a focus on "
-    "LLM-powered automation and document intelligence."
-)
+SUMMARY_SHORT = basics["summary"]
+SUMMARY_FULL = f'{basics["summary"]} {basics["impact"]}'
+
+
+def format_date(value):
+    if not value or value == "Present":
+        return value or ""
+    return datetime.strptime(value, "%Y-%m").strftime("%b %Y")
+
 
 EXPERIENCE = [
     {
-        "company": "Microsoft",
-        "role": "AI Software Engineer (Contract)",
-        "loc": "Redmond, WA",
-        "dates": "Mar 2026 – Present",
-        "points": [
-            "Architecting and developing AI software solutions across Microsoft engineering workflows.",
-            "Building and integrating LLM-powered features and automation into production systems.",
-        ],
-    },
-    {
-        "company": "Quadrant Technologies",
-        "role": "AI Software Engineer (Full-time)",
-        "loc": "Redmond, WA",
-        "dates": "Aug 2025 – Present",
-        "points": [
-            "Designed and implemented ETL processes for security logs and vulnerability reports.",
-            "Leveraged machine learning to analyze threat intelligence data and inform mitigation strategies.",
-            "Developed data ingestion systems for endpoint and network security telemetry.",
-            "Created monitoring dashboards for cloud security and compliance posture.",
-            "Promoted from Software Intern (Jul 2025 – Aug 2025) after a successful internship.",
-        ],
-    },
-    {
-        "company": "QikCell by tickioT",
-        "role": "Solutions Engineer Intern",
-        "loc": "Los Angeles, CA",
-        "dates": "Jan 2025 – May 2025",
-        "points": [
-            "Collaborated with sales and technical teams to align customer needs with product capabilities.",
-            "Developed and customized technical demonstrations to showcase product features.",
-            "Assisted in troubleshooting and documenting solutions, reducing response times by 20%.",
-        ],
-    },
-    {
-        "company": "ColorOS (OPPO)",
-        "role": "User Test Specialist (Freelance)",
-        "loc": "Remote",
-        "dates": "Jun 2018 – Jul 2022",
-        "points": [
-            "Conducted user testing for ColorOS Beta and Alpha versions (5.0 to 12.1).",
-            "Identified bugs and suggested new features based on user feedback.",
-            "Collaborated with cross-functional teams to improve software performance.",
-        ],
-    },
-    {
-        "company": "Pantech ProEd Pvt Ltd",
-        "role": "Student Intern",
-        "loc": "Hyderabad, India",
-        "dates": "Jun 2020 – Jul 2020",
-        "points": [
-            "Contributed to the development of a high-speed 64-bit binary comparator.",
-            "Optimized design parameters in collaboration with the engineering team.",
-        ],
-    },
-    {
-        "company": "PeopleLink Unified Communications",
-        "role": "Product Tester, R&D",
-        "loc": "Hyderabad, India",
-        "dates": "Jun 2018 – May 2019",
-        "points": [
-            "Evaluated prototypes to ensure functionality and quality before release.",
-            "Contributed to the market release of products, reducing post-launch defects by 20%.",
-        ],
-    },
+        "company": job["name"],
+        "role": job["position"],
+        "loc": job["location"],
+        "dates": f'{format_date(job["startDate"])} – {format_date(job["endDate"])}',
+        "points": job.get("highlights", []),
+    }
+    for job in data["work"]
 ]
 
 
@@ -185,12 +126,12 @@ def build(cfg):
 
     # header
     story.append(Paragraph(basics["name"], s["name"]))
-    story.append(Paragraph("AI Software Engineer", s["subtitle"]))
+    story.append(Paragraph("AI Software Engineer | Developer", s["subtitle"]))
     loc = basics.get("location", {})
     loc_str = ", ".join(x for x in [loc.get("city"), loc.get("region")] if x)
     email = basics["email"]
     contact = (
-        f'{loc_str} &nbsp;&bull;&nbsp; '
+        f'{loc_str} &nbsp;&bull;&nbsp; {basics.get("phone", "")} &nbsp;&bull;&nbsp; '
         f'<a href="mailto:{email}" color="#0F6E4F">{email}</a> &nbsp;&bull;&nbsp; '
         f'<a href="https://www.linkedin.com/in/rajesh-kodaganti-323118215/" color="#0F6E4F">LinkedIn</a> &nbsp;&bull;&nbsp; '
         f'<a href="https://github.com/Unigalactix" color="#0F6E4F">GitHub</a> &nbsp;&bull;&nbsp; '
@@ -223,12 +164,12 @@ def build(cfg):
     # education
     section("Education")
     for ed in data["education"]:
-        sy = ed.get("startDate", "").replace("-", "/")
-        ey = ed.get("endDate", "").replace("-", "/")
+        sy = format_date(ed.get("startDate", ""))
+        ey = format_date(ed.get("endDate", ""))
         two_col_header(ed["institution"], f'{sy} – {ey}')
         deg = f'{ed.get("studyType", "")}, {ed.get("area", "")}'
         if ed.get("score"):
-            deg += f' &nbsp;|&nbsp; GPA: {ed["score"]}'
+            deg += f' &nbsp;|&nbsp; Score: {ed["score"]}'
         story.append(Paragraph(deg, s["sub"]))
         story.append(Spacer(1, 3))
 
@@ -295,9 +236,9 @@ def build(cfg):
 
 VARIANTS = [
     dict(out="resume-1page.pdf", density="tight", summary="short",
-         exp=3, exp_bullets=2, proj=4, proj_desc=True, proj_bullets=0, certs="select"),
+        exp=3, exp_bullets=1, proj=2, proj_desc=False, proj_bullets=0, certs="select"),
     dict(out="resume-2page.pdf", density="normal", summary="full",
-         exp=None, exp_bullets=None, proj=None, proj_desc=True, proj_bullets=1, certs="all"),
+        exp=None, exp_bullets=2, proj=5, proj_desc=True, proj_bullets=0, certs="select"),
     dict(out="resume-3page.pdf", density="loose", summary="full",
          exp=None, exp_bullets=None, proj=None, proj_desc=True, proj_bullets=3, certs="all"),
 ]

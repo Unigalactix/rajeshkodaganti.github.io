@@ -1517,7 +1517,6 @@ class TechGamesManager {
     }
 }
 
-// Initialize Tech Games when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new TechGamesManager();
-});
+window.initTechGames = function () {
+    return new TechGamesManager();
+};

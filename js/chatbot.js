@@ -1,7 +1,6 @@
 /**
- * Pam - The Portfolio Assistant Module
+ * Portfolio Assistant Module
  * A keyword-based chatbot that uses data.json as its knowledge base.
- * Persona: Pam Beesly (The Office)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -18,10 +17,10 @@ async function initPam() {
     try {
         const response = await fetch('js/data.json');
         pamData = await response.json();
-        console.log('Pam: Knowledge loaded!', pamData);
+        console.log('Portfolio assistant: knowledge loaded.');
     } catch (e) {
-        console.error('Pam: Failed to load knowledge.', e);
-        addMessage('system', "Dunder Mifflin, this is Pam... sorry, my line seems to be down (failed to load data.json).");
+        console.error('Portfolio assistant: failed to load knowledge.', e);
+        addMessage('system', 'Portfolio information is temporarily unavailable. Please use the page sections or contact form.');
     }
 
     // 3. Attach Listeners
@@ -40,35 +39,32 @@ async function initPam() {
 
     // 4. Greeting
     setTimeout(() => {
-        const isOffice = document.body.classList.contains('office-theme');
-        const msg = isOffice
-            ? "Dunder Mifflin, this is Pam. 👋  \nI can help you with Rajesh's portfolio. Would you like to buy some paper? Or maybe see his projects?"
-            : "Hi, I'm Pam! 👋  \nI'm Rajesh's virtual assistant. Ask me about his **Skills**, **Projects**, or **Experience**!";
-        addMessage('bot', msg);
+        addMessage('bot', "Hi, I'm the portfolio assistant. Ask about Rajesh's experience, projects, skills, certifications, resume, or contact details.");
     }, 1000);
 }
 
 function createChatUI() {
     const html = `
     <!-- Floating Toggle Button -->
-    <button id="pam-toggle-btn" class="pam-float-btn">
-        <i class="fa fa-comments"></i>
+    <button id="pam-toggle-btn" class="pam-float-btn" aria-label="Open portfolio assistant" aria-expanded="false" aria-controls="pam-window">
+        <i class="fa fa-comments" aria-hidden="true"></i>
     </button>
 
     <!-- Chat Window -->
-    <div id="pam-window" class="pam-window" style="display: none;">
+    <div id="pam-window" class="pam-window" role="dialog" aria-label="Portfolio assistant" style="display: none;">
         <div class="pam-header">
-            <div class="pam-avatar">P</div>
+            <div class="pam-avatar" aria-hidden="true">RK</div>
             <div class="pam-info">
-                <h4>Pam Beesly</h4>
-                <span>Receptionist & Assistant</span>
+                <h4>Portfolio Assistant</h4>
+                <span>Experience and project search</span>
             </div>
-            <button id="pam-close-btn">&times;</button>
+            <button id="pam-close-btn" aria-label="Close portfolio assistant"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
-        <div id="pam-messages" class="pam-messages"></div>
+        <div id="pam-messages" class="pam-messages" aria-live="polite"></div>
         <div class="pam-input-area">
-            <input type="text" id="pam-input" placeholder="Ask about skills, projects, or say hi...">
-            <button id="pam-send-btn"><i class="fa fa-paper-plane"></i></button>
+            <label class="sr-only" for="pam-input">Ask about Rajesh's portfolio</label>
+            <input type="text" id="pam-input" placeholder="Ask about skills, projects, or experience">
+            <button id="pam-send-btn" aria-label="Send message"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
         </div>
     </div>
     `;
@@ -86,12 +82,14 @@ function toggleChat() {
     if (window.style.display === 'none') {
         window.style.display = 'flex';
         btn.style.display = 'none';
+        btn.setAttribute('aria-expanded', 'true');
 
         // Focus input
         setTimeout(() => document.getElementById('pam-input').focus(), 100);
     } else {
         window.style.display = 'none';
         btn.style.display = 'flex';
+        btn.setAttribute('aria-expanded', 'false');
     }
 }
 
@@ -102,7 +100,6 @@ function handleUserInput(inputEl) {
     addMessage('user', text);
     inputEl.value = '';
 
-    // Simulate thinking
     const typingId = showTyping();
 
     // Process logic
@@ -110,7 +107,7 @@ function handleUserInput(inputEl) {
         removeTyping(typingId);
         const response = generateResponse(text);
         addMessage('bot', response);
-    }, 600 + Math.random() * 500);
+    }, 250);
 }
 
 function showTyping() {
@@ -142,42 +139,17 @@ function addMessage(sender, text) {
 
 /**
  * CORE LOGIC: Searching data.json
- * Persona: Pam Beesly
  */
 function generateResponse(query) {
-    if (!pamData) return "Oh, hold on a second, I need to find the files... (Data not loaded yet)";
+    if (!pamData) return 'Portfolio data is still loading. Please try again in a moment.';
 
     const q = query.toLowerCase();
-    const isOffice = document.body.classList.contains('office-theme');
-
-    // 0. Office Theme Specific Overrides
-    if (isOffice) {
-        if (q.match(/^(hi|hello|hey|yo)/)) return "Dunder Mifflin, this is Pam. Please hold... just kidding. How can I help?";
-        if (q.includes("dwight")) return "Ugh, Dwight. He's probably measuring the distance between his desk and the bathroom. Do you need security?";
-        if (q.includes("jim")) return "Jim is on a sales call. (He's actually stacking paper clips).";
-        if (q.includes("michael")) return "Michael is in a meeting. It's about 'The Dundies'.";
-        if (q.includes("prank")) return "I can't authorize any pranks on this website. Talk to Jim.";
-        if (q.includes("project") || q.includes("work")) return "I have the project files right here in the filing cabinet. Let me pull them up.";
-        if (q.includes("contact") || q.includes("email")) return "You can fax us at... oh wait, Rajesh uses email. It's **rajeshkodaganti.work@gmail.com**.";
-        if (q.includes("resume") || q.includes("cv")) return "resume.pdf? I think I saw that on the fax machine. You can download it below.";
-        if (q.includes("skills")) return "He has 'nunchuck skills'... wait, wrong movie. But he is great at **Python** and **Machine Learning**.";
-        if (q.includes("coffee")) return "We're out of coffee. Michael tried to make some and... well, just don't ask.";
-    }
-
-
-    // 1. The Office / Pam Persona Easter Eggs
-    if (q.includes("jim")) return "Oh, Jim? He's great. He might be pranking Dwight right now. 😉";
-    if (q.includes("michael")) return "Michael is... well, being Michael. I try to keep him busy.";
-    if (q.includes("dwight")) return "Assistant *to* the Regional Manager. Don't tell him I said that.";
-    if (q.includes("dunder") || q.includes("mifflin")) return "Dunder Mifflin, this is Pam. How can I help you today?";
-    if (q.includes("art") || q.includes("paint")) return "I actually love art! I did a watercolor of the office building once. Maybe Rajesh needs a logo design?";
-
-    // 2. Basic Greetings
-    if (q.match(/^(hi|hello|hey|yo)/)) return "Hi there! 👋  Pam here. Looking for info on Rajesh's work?";
+    if (q.match(/^(hi|hello|hey)/)) return "Hello. Ask me about Rajesh's AI engineering work, projects, technical skills, or credentials.";
     if (q.includes("contact") || q.includes("email") || q.includes("hire") || q.includes("phone")) {
-        return `You can email Rajesh at **${pamData.basics.email}**. <br/>I'd transfer you, but... well, this is a website.`;
+        return `You can contact Rajesh at <strong>${pamData.basics.email}</strong> or ${pamData.basics.phone}.`;
     }
-    if (q.includes("who are you")) return "I'm Pam Beesly, the office administrator here. I keep things organized while Rajesh codes.";
+    if (q.includes("resume") || q.includes("cv")) return '<a href="resume-2page.pdf" target="_blank" rel="noopener">Open the recommended two-page resume</a>.';
+    if (q.includes("who are you")) return "I'm a local search assistant for Rajesh's portfolio data.";
 
     // 3. Search Skills
     const skillMatch = findSkill(q);
@@ -196,7 +168,7 @@ function generateResponse(query) {
     if (certMatch) return certMatch;
 
     // Default Fallback
-    return "I'm not sure about that one. I can check the files for his **Skills**, **Projects**, or **Experience** if you like?";
+    return "I couldn't find a direct match. Try asking about experience, projects, skills, certifications, resume, or contact details.";
 }
 
 function findSkill(query) {
@@ -205,7 +177,7 @@ function findSkill(query) {
     for (const cat of pamData.skills) {
         const match = cat.keywords.find(k => query.includes(k.toLowerCase()));
         if (match) {
-            return `Oh yes, **${match}**! That's stored in the "${cat.name}" file. Rajesh is quite good at it.`;
+            return `<strong>${match}</strong> appears under ${cat.name}.`;
         }
     }
     return null;
@@ -221,12 +193,12 @@ function findProject(query) {
     );
 
     if (p) {
-        return `I found a project folder labeled "**${p.name}**". <br/>"${p.description}" <br/>Apparently he used: ${p.keywords.join(', ')}. neat!`;
+        return `<strong>${p.name}</strong><br>${p.description}<br><strong>Technologies:</strong> ${p.keywords.join(', ')}.`;
     }
 
     if (query.includes("projects") || query.includes("work")) {
         const names = pamData.projects.map(p => p.name).slice(0, 3).join(", ");
-        return `We have a lot of project files here. Some recent ones are: **${names}**. You can see the full list below!`;
+        return `Featured projects include <strong>${names}</strong>. See Selected Engineering Case Studies for details.`;
     }
 
     return null;
@@ -235,9 +207,13 @@ function findProject(query) {
 function findWork(query) {
     if (!pamData.work) return null;
 
-    const w = pamData.work.find(job => job.name.toLowerCase().includes(query) || job.summary.toLowerCase().includes(query));
+    const w = pamData.work.find(job =>
+        job.name.toLowerCase().includes(query) ||
+        job.position.toLowerCase().includes(query) ||
+        (job.summary || '').toLowerCase().includes(query)
+    );
     if (w) {
-        return `Ah, employment history. He worked at **${w.name}** as a ${w.position}. <br/>Dates: ${w.startDate} - ${w.endDate}. <br/>"${w.summary}"`;
+        return `<strong>${w.position} at ${w.name}</strong><br>${w.startDate} - ${w.endDate}<br>${w.summary}`;
     }
     return null;
 }
@@ -247,7 +223,7 @@ function findCert(query) {
 
     const c = pamData.certificates.find(cert => cert.name.toLowerCase().includes(query) || cert.issuer.toLowerCase().includes(query));
     if (c) {
-        return `Yup, there's a certificate here for **${c.name}** from ${c.issuer} (${c.date}). Hanging on the fridge... I mean, wall.`;
+        return `<strong>${c.name}</strong> from ${c.issuer}, earned ${c.date}.`;
     }
     return null;
 }

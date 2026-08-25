@@ -4,6 +4,14 @@
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    document.querySelectorAll('[data-current-year]').forEach(function (element) {
+        element.textContent = String(new Date().getFullYear());
+    });
+
+    document.querySelectorAll('a[target="_blank"]').forEach(function (link) {
+        link.rel = 'noopener noreferrer';
+    });
+
     // Auto-tag grid cards so they fade in with a subtle stagger.
     var cards = document.querySelectorAll(
         '.tool-grid > [class*="col-"], .book-grid > [class*="col-"]'

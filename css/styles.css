@@ -63,6 +63,7 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    overflow-x: clip;
 }
 
 /* Respect user's motion preferences */
@@ -212,10 +213,28 @@ a {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
-textarea:focus-visible {
+textarea:focus-visible,
+[role="button"]:focus-visible {
     outline: 2px solid var(--accent-blue);
     outline-offset: 2px;
     box-shadow: 0 0 0 4px rgba(116, 217, 255, 0.22);
+}
+
+.skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 30000;
+    padding: 0.65rem 0.9rem;
+    background: var(--accent-green);
+    color: var(--bg-charcoal);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    transform: translateY(-180%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
 }
 
 /* 3. Typography */
@@ -234,7 +253,7 @@ h6 {
 
 h1 {
     font-size: clamp(3rem, 8vw, 5rem);
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
     line-height: 0.97;
     max-width: 14ch;
 }
@@ -244,7 +263,7 @@ h2 {
     margin-bottom: 3rem;
     position: relative;
     display: inline-block;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
 }
 
 /* Underline effect for H2 */
@@ -1438,6 +1457,47 @@ body.site-ready .logo::after {
     display: block;
 }
 
+.section-intro {
+    max-width: 760px;
+    margin-top: -1.7rem;
+    margin-bottom: 2rem;
+    color: var(--text-secondary);
+}
+
+.section-eyebrow {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--accent-yellow);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.hero-impact {
+    max-width: 720px;
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent-green);
+    color: var(--text-secondary);
+}
+
+.accessible-card {
+    cursor: pointer;
+}
+
+.accessible-card:focus-visible {
+    border-color: var(--accent-blue);
+    transform: translateY(-2px);
+}
+
+.card-open {
+    display: block;
+    margin-top: auto;
+    text-align: right;
+    color: var(--accent-green);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+}
+
 /* 8. Skills / About */
 .skill-category {
     margin-bottom: 1.5rem;
@@ -1661,6 +1721,59 @@ body.site-ready .logo::after {
     gap: 0.5rem;
 }
 
+.project-details-btn {
+    background: transparent;
+    cursor: pointer;
+}
+
+.project-visual {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 0 0 1rem;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius-sm);
+    background: var(--surface-3);
+}
+
+.project-visual img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.architecture-visual {
+    display: grid;
+    grid-template-columns: repeat(7, auto);
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 1rem;
+    background-image:
+        linear-gradient(rgba(116, 217, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(116, 217, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.architecture-node {
+    min-width: 0;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid rgba(45, 255, 176, 0.45);
+    border-radius: var(--border-radius-sm);
+    background: rgba(16, 20, 26, 0.94);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.architecture-visual i {
+    color: var(--accent-blue);
+}
+
 .btn-text {
     display: inline-block;
     padding: 0.33rem 0.65rem;
@@ -1735,25 +1848,34 @@ body.site-ready .logo::after {
     margin-bottom: 0.7rem;
 }
 
-.commit-heatmap {
+.milestone-timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.milestone-timeline li {
     display: grid;
-    grid-template-columns: repeat(21, 1fr);
-    gap: 4px;
-    margin: 0.8rem 0;
+    grid-template-columns: minmax(110px, 0.65fr) 1fr;
+    gap: 0.75rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
 }
 
-.commit-cell {
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 3px;
-    background: #1f2b27;
-    border: 1px solid rgba(255, 255, 255, 0.03);
+.milestone-timeline li:last-child {
+    border-bottom: 0;
 }
 
-.commit-cell.lv1 { background: #1c4f3d; }
-.commit-cell.lv2 { background: #227957; }
-.commit-cell.lv3 { background: #1cbf7a; }
-.commit-cell.lv4 { background: #54ffaa; }
+.milestone-timeline time {
+    color: var(--accent-green);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+}
+
+.milestone-timeline strong {
+    color: var(--text-primary);
+    font-size: 0.82rem;
+}
 
 .activity-recent ul {
     list-style: none;
@@ -2620,6 +2742,13 @@ body.is-touch .cursor-glow {
     color: var(--accent-yellow);
 }
 
+.modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding-top: 0.5rem;
+}
+
 /* Animations */
 @keyframes fadeIn {
     from {
@@ -2712,6 +2841,32 @@ body.is-touch .cursor-glow {
 .cert-card:hover {
     background: rgba(255, 255, 255, 0.07);
     transform: translateY(-2px) translateZ(0);
+}
+
+.cert-card.featured-cert {
+    border-color: rgba(45, 255, 176, 0.35);
+    background: rgba(45, 255, 176, 0.055);
+}
+
+@media (max-width: 620px) {
+    .project-card {
+        min-height: 0;
+    }
+
+    .architecture-visual {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+    }
+
+    .architecture-visual i {
+        transform: rotate(90deg);
+        justify-self: center;
+    }
+
+    .milestone-timeline li {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
+    }
 }
 
 .cert-icon {
