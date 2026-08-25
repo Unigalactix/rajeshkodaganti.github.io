@@ -31,6 +31,7 @@ class ModalManager {
                     <p><strong>Company:</strong> ${this.escape(job.name)}</p>
                     <p><strong>Location:</strong> ${this.escape(job.location)}</p>
                     <p><strong>Duration:</strong> ${this.formatPeriod(job.startDate, job.endDate)}</p>
+                    ${job.project ? `<p><strong>Featured project:</strong> ${this.escape(job.project)}</p>` : ''}
                     <p>${this.escape(job.summary)}</p>
                 </section>
                 ${this.listSection('Key contributions', 'fa-tasks', job.highlights)}
@@ -75,11 +76,17 @@ class ModalManager {
             body: `
                 <section class="modal-section">
                     <h3><i class="fa fa-info-circle" aria-hidden="true"></i> Overview</h3>
+                    ${project.organization ? `<p><strong>Organization:</strong> ${this.escape(project.organization)}</p>` : ''}
+                    ${project.role ? `<p><strong>Role:</strong> ${this.escape(project.role)}</p>` : ''}
+                    <p><strong>Duration:</strong> ${this.formatPeriod(project.startDate, project.endDate)}</p>
                     <p>${this.escape(project.description)}</p>
                 </section>
                 ${project.problem ? this.textSection('Problem', 'fa-exclamation-circle', project.problem) : ''}
                 ${project.approach ? this.textSection('Approach', 'fa-code', project.approach) : ''}
                 ${project.impact ? this.textSection('Impact', 'fa-line-chart', project.impact) : ''}
+                ${this.listSection('Six-phase workflow', 'fa-random', project.workflow)}
+                ${this.listSection('Architecture', 'fa-sitemap', project.architecture)}
+                ${this.listSection('Delivered artifacts', 'fa-file-text-o', project.deliverables)}
                 ${this.listSection('Evidence', 'fa-check-circle', project.highlights)}
                 ${this.tagsSection('Technologies', 'fa-cogs', project.keywords)}
                 ${links ? `<div class="modal-actions">${links}</div>` : ''}

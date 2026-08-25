@@ -27,6 +27,7 @@
       "location": "Redmond, Washington",
       "startDate": "2025-10",
       "endDate": "Present",
+      "project": "IcM Outage Automation - Microsoft Identity LiveSite",
       "summary": "Developing cloud automation and AI-powered outage-management systems for Microsoft Identity LiveSite operations.",
       "technologies": ["Python", "Azure Functions", "KQL", "Azure OpenAI", "Logic Apps", "Bicep", "Service Bus", "Key Vault", "Application Insights"],
       "highlights": [
@@ -175,6 +176,8 @@
     {
       "id": "icm-outage",
       "name": "IcM Outage Automation - Microsoft Identity LiveSite",
+      "organization": "Microsoft",
+      "role": "AI Software Engineer (Contract)",
       "startDate": "2025-10",
       "endDate": "Present",
       "featured": true,
@@ -183,6 +186,29 @@
       "problem": "Severity 0-2 incident review required coordinated processing across more than 70 services, multiple data sources, DRI workflows, and operational reports.",
       "approach": "Built event-driven Python Azure Functions and KQL workflows, added Azure OpenAI classification, automated Logic Apps escalation, and provisioned secure infrastructure with Bicep and managed identity.",
       "impact": "Delivered a production-oriented workflow supporting Severity 0-2 incidents across 70+ Microsoft Identity services with automated reporting and operational runbooks.",
+      "workflow": [
+        "Incident ingestion",
+        "Data enrichment",
+        "AI-assisted classification",
+        "Validation",
+        "DRI notification and escalation",
+        "Operational reporting"
+      ],
+      "architecture": [
+        "Python Azure Functions and KQL workflows for IcM data processing",
+        "Azure OpenAI for root-cause and recurring-outage pattern classification",
+        "Logic Apps for DRI notifications and escalation workflows",
+        "Service Bus and Blob Storage for event-driven processing and report storage",
+        "Managed identity, Key Vault, and Entra ID for secure service access",
+        "Application Insights for monitoring and troubleshooting",
+        "Bicep for repeatable infrastructure provisioning"
+      ],
+      "deliverables": [
+        "Excel and Word reports for incident review and operational reporting",
+        "Operational dashboard for outage-management visibility",
+        "Runbooks and troubleshooting guidance",
+        "Knowledge-transfer documentation"
+      ],
       "highlights": [
         "Implemented six phases covering incident ingestion, enrichment, classification, validation, escalation, and reporting.",
         "Integrated Azure OpenAI for root-cause and recurring-pattern classification.",

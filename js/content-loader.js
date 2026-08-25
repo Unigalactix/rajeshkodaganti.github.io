@@ -69,6 +69,7 @@ function renderExperience(work) {
                 <span class="card-role">${job.position}</span>
                 <h3>${job.name}</h3>
                 <span class="card-date">${formatPeriod(job.startDate, job.endDate)}</span>
+                ${job.project ? `<p class="experience-project"><strong>Project:</strong> ${job.project}</p>` : ''}
                 <p>${job.summary}</p>
                 <span class="card-open">Open details() -&gt;</span>
             </div>`;
